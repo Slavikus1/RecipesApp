@@ -3,6 +3,10 @@
     <style name="Base.Theme.RecipesApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@color/status_and_navigation_bars</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/status_and_navigation_bars</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="Theme.RecipesApp" parent="Base.Theme.RecipesApp" />
