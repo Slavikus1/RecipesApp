@@ -5,4 +5,5 @@
     <color name="category_button">#525DC0</color>
     <color name="favourites_button">#E13E3E</color>
     <color name="status_and_navigation_bars">#F4FAFF</color>
+    <color name="main_layout_color">#F4FAFF</color>
 </resources>

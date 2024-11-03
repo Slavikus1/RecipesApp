@@ -5,9 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.aliohin.recipesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private val binding = ActivityMainBinding.inflate(layoutInflater)
+    private var _binding: ActivityMainBinding? = null
+    private val binding
+        get() = _binding
+            ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null ")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
     }
 }
