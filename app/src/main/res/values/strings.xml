@@ -2,4 +2,6 @@
     <string name="app_name" translatable="false">RecipesApp</string>
     <string name="button_favourites">Favourites</string>
     <string name="button_category">Category</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
