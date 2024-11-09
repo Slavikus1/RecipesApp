@@ -2,6 +2,7 @@ package ru.aliohin.recipesapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import ru.aliohin.recipesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -14,5 +15,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add(R.id.mainContainer, CategoriesListFragment())
+        }
+
     }
 }
