@@ -17,18 +17,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<CategoriesListFragment>(R.id.mainContainer)
+                addToBackStack(null)
+            }
+        }
         binding.categoryButton.setOnClickListener {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<CategoriesListFragment>(R.id.mainContainer)
+                addToBackStack(null)
             }
         }
 
         binding.favouritesButton.setOnClickListener {
             supportFragmentManager.commit {
-                replace<FavoritesFragment>(R.id.mainContainer)
                 setReorderingAllowed(true)
+                add<FavoritesFragment>(R.id.mainContainer)
+                addToBackStack(null)
             }
         }
     }
