@@ -30,6 +30,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            android:id="@+id/categoryButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/space_between_nav_buttons"
@@ -41,6 +42,7 @@
         </Button>
 
         <Button
+            android:id="@+id/favouritesButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_between_nav_buttons"
