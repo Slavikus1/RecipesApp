@@ -11,4 +11,9 @@
         <item name="android:textAppearance">@style/StyleTitle14</item>
         <item name="cornerRadius">@dimen/main_space_half_8</item>
     </style>
+
+    <style name="HeaderTitle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/header_title_text_size_20</item>
+        <item name="android:textColor">@color/header_title_text_color</item>
+    </style>
 </resources>
