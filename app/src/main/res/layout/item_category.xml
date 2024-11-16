@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/main_space_half_8"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/main_space_half_8">
+
+    <LinearLayout
+        android:id="@+id/clCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/space_10">
+
+        <ImageView
+            android:id="@+id/ivCategoryLogo"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/bcg_categories" />
+
+        <TextView
+            android:id="@+id/tvCategoryName"
+            style="@style/StyleItemCards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/main_space_half_8"
+            tools:text="burgers" />
+
+        <TextView
+            android:id="@+id/tvCategoryDescription"
+            style="@style/StyleItemCardsDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_space_half_8"
+            tools:text="Самые вкусные рецепты десертов специально для вас" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
