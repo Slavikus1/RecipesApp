@@ -10,13 +10,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="224dp"
-        android:layout_marginTop="32dp">
+        android:layout_height="@dimen/constraint_banner_height_224"
+        android:layout_marginTop="@dimen/layout_margin_32">
 
         <ImageView
             android:id="@+id/imageHeader"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:scaleType="centerCrop"
             android:src="@drawable/bcg_categories"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,11 +27,11 @@
         <TextView
             style="@style/HeaderTitle"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/main_space_16"
             android:background="@drawable/shape_header_title"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/space_10"
             android:text="@string/button_category"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

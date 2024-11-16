@@ -10,30 +10,32 @@
 
     <LinearLayout
         android:id="@+id/clCard"
-        android:layout_width="156dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="10dp">
+        android:paddingBottom="@dimen/space_10">
 
         <ImageView
             android:id="@+id/ivCategoryLogo"
-            android:layout_width="156dp"
+            android:layout_width="match_parent"
             android:layout_height="130dp"
             android:scaleType="centerCrop"
             tools:src="@drawable/bcg_categories" />
 
         <TextView
             android:id="@+id/tvCategoryName"
+            style="@style/StyleItemCards"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            tools:text="BURGERS" />
+            android:layout_margin="@dimen/main_space_half_8"
+            tools:text="burgers" />
 
         <TextView
             android:id="@+id/tvCategoryDescription"
+            style="@style/StyleItemCardsDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/main_space_half_8"
             tools:text="Самые вкусные рецепты десертов специально для вас" />
 
     </LinearLayout>
