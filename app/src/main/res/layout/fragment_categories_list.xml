@@ -10,8 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/constraint_banner_height_224"
-        android:layout_marginTop="@dimen/layout_margin_32">
+        android:layout_height="@dimen/constraint_banner_height_224">
 
         <ImageView
             android:id="@+id/imageHeader"
