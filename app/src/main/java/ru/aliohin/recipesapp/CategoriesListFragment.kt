@@ -21,8 +21,18 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecycler()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initRecycler() {
+        val categoriesAdapter = CategoryListAdapter(STUB.getCategories())
+        binding.rvCategory.adapter = categoriesAdapter
     }
 }

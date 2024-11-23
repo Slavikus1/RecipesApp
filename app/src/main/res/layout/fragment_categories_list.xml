@@ -10,8 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/constraint_banner_height_224"
-        android:layout_marginTop="@dimen/layout_margin_32">
+        android:layout_height="@dimen/constraint_banner_height_224">
 
         <ImageView
             android:id="@+id/imageHeader"
@@ -43,9 +42,8 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/main_space_half_8"
         android:layout_marginTop="@dimen/main_space_half_8"
-        tools:itemCount="6"
-        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/item_category"
-        tools:spanCount="2" />
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        tools:listitem="@layout/item_category" />
 
 </LinearLayout>
