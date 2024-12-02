@@ -12,6 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 class CategoryListAdapter(private val dataset: List<Category>) :
     RecyclerView.Adapter<CategoryListAdapter.ViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick()
+    }
+
+    private var itemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener){
+        itemClickListener = listener
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById(R.id.ivCategoryLogo)
         val titleTextView: TextView = view.findViewById(R.id.tvCategoryName)
@@ -42,6 +52,7 @@ class CategoryListAdapter(private val dataset: List<Category>) :
                 null
             }
         viewHolder.imageView.setImageDrawable(drawable)
+        viewHolder.imageView.setOnClickListener { itemClickListener?.onItemClick() }
     }
 
     override fun getItemCount() = dataset.size
