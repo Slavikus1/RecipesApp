@@ -37,13 +37,10 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
         val categoriesAdapter = CategoryListAdapter(STUB.getCategories())
         binding.rvCategory.adapter = categoriesAdapter
         categoriesAdapter.setOnItemClickListener(object : CategoryListAdapter.OnItemClickListener {
-            override fun onItemClick() {
-                openRecipesByCategoryId()
-            }
-        })
+            override fun onItemClick() {openRecipesByCategoryId()}})
     }
 
-    private fun openRecipesByCategoryId(){
+    private fun openRecipesByCategoryId() {
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             add<RecipesListFragment>(R.id.mainContainer)
