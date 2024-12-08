@@ -23,9 +23,9 @@ class RecipesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireArguments().let { args ->
-            categoryId = args.getInt(ARG_CATEGORY_ID)
-            categoryName = args.getString(ARG_CATEGORY_NAME)
-            categoryImageUrl = args.getString(ARG_CATEGORY_IMAGE_URL)
+            categoryId = args.getInt(CategoriesListFragment.ARG_CATEGORY_ID)
+            categoryName = args.getString(CategoriesListFragment.ARG_CATEGORY_NAME)
+            categoryImageUrl = args.getString(CategoriesListFragment.ARG_CATEGORY_IMAGE_URL)
         }
     }
 }

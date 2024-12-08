@@ -10,11 +10,14 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import ru.aliohin.recipesapp.databinding.FragmentCategoriesListBinding
 
-const val ARG_CATEGORY_ID = "arg_category_id"
-const val ARG_CATEGORY_NAME = "arg_category_name"
-const val ARG_CATEGORY_IMAGE_URL = "arg_category_image_url"
-
 class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
+
+    companion object {
+        const val ARG_CATEGORY_ID = "arg_category_id"
+        const val ARG_CATEGORY_NAME = "arg_category_name"
+        const val ARG_CATEGORY_IMAGE_URL = "arg_category_image_url"
+    }
+
     private var _binding: FragmentCategoriesListBinding? = null
     private val binding
         get() = _binding
