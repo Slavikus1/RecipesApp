@@ -3,11 +3,11 @@ package ru.aliohin.recipesapp
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import ru.aliohin.recipesapp.databinding.ItemCategoryBinding
 
 class CategoryListAdapter(private val dataset: List<Category>) :
     RecyclerView.Adapter<CategoryListAdapter.ViewHolder>() {
@@ -22,19 +22,19 @@ class CategoryListAdapter(private val dataset: List<Category>) :
         itemClickListener = listener
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.findViewById(R.id.ivCategoryLogo)
-        val titleTextView: TextView = view.findViewById(R.id.tvCategoryName)
-        val descriptionTextView: TextView = view.findViewById(R.id.tvCategoryDescription)
+    class ViewHolder(binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
+        val imageView: ImageView = binding.ivCategoryLogo
+        val titleTextView: TextView = binding.tvCategoryName
+        val descriptionTextView: TextView = binding.tvCategoryDescription
     }
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val view =
-            LayoutInflater.from(viewGroup.context).inflate(R.layout.item_category, viewGroup, false)
-        return ViewHolder(view)
+        val binding =
+            ItemCategoryBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {

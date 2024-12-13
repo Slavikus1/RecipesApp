@@ -1,7 +1,7 @@
 package ru.aliohin.recipesapp
 
 data class Ingredient(
-    val quantity: Double,
+    val quantity: String,
     val unitOfMeasure: String,
     val description: String,
 )
