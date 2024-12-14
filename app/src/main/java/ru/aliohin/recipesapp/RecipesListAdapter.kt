@@ -42,6 +42,8 @@ class RecipesListAdapter(private val dataset: List<Recipe>) :
     override fun onBindViewHolder(holder: RecipeHolder, position: Int) {
         val recipe: Recipe = dataset[position]
         holder.titleTextView.text = recipe.title
+        holder.imageView.contentDescription =
+            holder.itemView.context.getString(R.string.iV_Recipes_list_description)
         val drawable =
             try {
                 Drawable.createFromStream(

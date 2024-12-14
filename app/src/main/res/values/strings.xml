@@ -3,7 +3,7 @@
     <string name="button_favourites">Favourites</string>
     <string name="button_category">Category</string>
     <string name="text_burgers">Burgers</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="iV_Recipes_list_description">Image of recipe</string>
+    <string name="iV_category_list_description">Image of category</string>
 
 </resources>

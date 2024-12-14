@@ -18,7 +18,7 @@ class CategoryListAdapter(private val dataset: List<Category>) :
 
     private var itemClickListener: OnItemClickListener? = null
 
-    fun setOnItemClickListener(listener: OnItemClickListener){
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
     }
 
@@ -40,6 +40,8 @@ class CategoryListAdapter(private val dataset: List<Category>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val category: Category = dataset[position]
         viewHolder.titleTextView.text = category.title
+        viewHolder.imageView.contentDescription =
+            viewHolder.itemView.context.getString(R.string.iV_category_list_description)
         viewHolder.descriptionTextView.text = category.description
         val drawable =
             try {
