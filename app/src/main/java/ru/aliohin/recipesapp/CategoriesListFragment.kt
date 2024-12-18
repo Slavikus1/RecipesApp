@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import ru.aliohin.recipesapp.databinding.FragmentCategoriesListBinding
 
 class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
@@ -61,7 +62,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
         )
         parentFragmentManager.commit {
             setReorderingAllowed(true)
-            add<RecipesListFragment>(R.id.mainContainer, args = bundle)
+            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
             addToBackStack(null)
         }
     }

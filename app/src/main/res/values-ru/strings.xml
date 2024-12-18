@@ -3,4 +3,6 @@
     <string name="button_favourites">Избранное</string>
     <string name="button_category">Категории</string>
     <string name="text_burgers">Бургеры</string>
+    <string name="iV_Recipes_list_description">Изображение рецепта</string>
+    <string name="iV_category_list_description">Изображение категории</string>
 </resources>

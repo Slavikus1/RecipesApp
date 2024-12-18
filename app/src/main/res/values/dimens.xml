@@ -9,4 +9,5 @@
     <dimen name="item_cards_description_12">14sp</dimen>
     <dimen name="main_text_size_14">14sp</dimen>
     <dimen name="header_title_text_size_20">20sp</dimen>
+    <dimen name="iV_recipe_height_size100">100dp</dimen>
 </resources>
