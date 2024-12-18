@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import ru.aliohin.recipesapp.databinding.FragmentRecipesListBinding
@@ -66,11 +67,21 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.mainContainer)
-            addToBackStack(null)
+        val recipe = STUB.getRecipeById(recipeId)
+        if (recipe != null) {
+             val bundle = bundleOf(ARG_RECIPE to recipe)
+            parentFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<RecipeFragment>(R.id.mainContainer, args = bundle)
+                addToBackStack(null)
+            }
+        } else {
+            throw IllegalStateException ("Recipes id is not found")
         }
+    }
+
+    companion object {
+        const val ARG_RECIPE = "arg_recipe"
     }
 
 
