@@ -43,7 +43,7 @@ class RecipesListAdapter(private val dataset: List<Recipe>) :
         val recipe: Recipe = dataset[position]
         holder.titleTextView.text = recipe.title
         holder.imageView.contentDescription =
-            holder.itemView.context.getString(R.string.iV_Recipes_list_description)
+            holder.itemView.context.getString(R.string.iV_Recipes_list_description, recipe.title)
         val drawable =
             try {
                 Drawable.createFromStream(
