@@ -19,7 +19,10 @@ class MethodAdapter(private val dataset: List<String>) :
 
     override fun onBindViewHolder(holder: MethodHolder, position: Int) {
         val method = dataset [position]
-        holder.methodTextView.text = method
+        var numberOfMethod = dataset.indexOf(method)
+        numberOfMethod += 1
+        val text = "$numberOfMethod. $method"
+        holder.methodTextView.text = text
     }
 
     override fun getItemCount(): Int = dataset.size
