@@ -7,4 +7,5 @@
     <color name="app_background_color">#F4FAFF</color>
     <color name="header_title_text_color">#5F3678</color>
     <color name="item_cards_description">#666666</color>
+    <color name="recipe_fragment_purple">#422952</color>
 </resources>
