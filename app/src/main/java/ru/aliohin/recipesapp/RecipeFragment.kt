@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -83,7 +84,8 @@ class RecipeFragment : Fragment() {
         val dividerItemDecoration =
             MaterialDividerItemDecoration(recycler.context, DividerItemDecoration.VERTICAL)
         dividerItemDecoration.isLastItemDecorated = false
-        dividerItemDecoration.dividerColor = Color.WHITE
+        val color = ContextCompat.getColor(requireContext(), R.color.white_divider)
+        dividerItemDecoration.dividerColor = color
         recycler.addItemDecoration(dividerItemDecoration)
     }
 }
