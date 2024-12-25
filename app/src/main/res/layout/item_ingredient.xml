@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvIngredient"
+        style="@style/CookingMethodDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/space_12"
+        android:layout_marginVertical="@dimen/main_space_half_8"
+        android:layout_weight="1"
+        tools:text="Капуста" />
+
+    <TextView
+        android:id="@+id/tvQuantity"
+        style="@style/CookingMethodDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/main_space_half_8"
+        android:layout_marginEnd="@dimen/space_3"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/tvUnitOfMeasure"
+        style="@style/CookingMethodDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/space_12"
+        android:layout_marginVertical="@dimen/main_space_half_8"
+        tools:text="ст.ложки" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

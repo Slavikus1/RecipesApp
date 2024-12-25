@@ -40,8 +40,6 @@ class CategoryListAdapter(private val dataset: List<Category>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val category: Category = dataset[position]
         viewHolder.titleTextView.text = category.title
-        viewHolder.imageView.contentDescription =
-            viewHolder.itemView.context.getString(R.string.iV_category_list_description)
         viewHolder.descriptionTextView.text = category.description
         val drawable =
             try {
@@ -55,6 +53,8 @@ class CategoryListAdapter(private val dataset: List<Category>) :
             }
         viewHolder.imageView.setImageDrawable(drawable)
         viewHolder.imageView.setOnClickListener { itemClickListener?.onItemClick(category.id) }
+        viewHolder.imageView.contentDescription =
+            viewHolder.itemView.context.getString(R.string.iV_category_list_description, category.title)
     }
 
     override fun getItemCount() = dataset.size
