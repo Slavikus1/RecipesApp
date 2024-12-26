@@ -8,8 +8,11 @@
     <dimen name="space_3">3dp</dimen>
     <dimen name="constraint_banner_height_224">224dp</dimen>
     <dimen name="layout_margin_32">32dp</dimen>
+    <dimen name="shape_thumb_30">30dp</dimen>
     <dimen name="item_cards_description_12">12sp</dimen>
     <dimen name="main_text_size_14">14sp</dimen>
     <dimen name="header_title_text_size_20">20sp</dimen>
     <dimen name="iV_recipe_height_size100">100dp</dimen>
+    <dimen name="shape_seekBar_thumb_radius">2dp</dimen>
+    <dimen name="shape_seekBar_progress_radius">4dp</dimen>
 </resources>
