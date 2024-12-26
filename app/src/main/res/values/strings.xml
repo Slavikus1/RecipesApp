@@ -8,5 +8,6 @@
     <string name="iV_recipe_description">Image of recipe</string>
     <string name="text_ingredients">Ingredients</string>
     <string name="text_cooking_method">cooking method</string>
+    <string name="text_portions">Portions:</string>
 
 </resources>

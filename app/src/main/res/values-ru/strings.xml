@@ -8,4 +8,5 @@
     <string name="iV_recipe_description">Изображение рецепта</string>
     <string name="text_ingredients">"Ингредиенты "</string>
     <string name="text_cooking_method">Способ приготовления</string>
+    <string name="text_portions">Порции:</string>
 </resources>
