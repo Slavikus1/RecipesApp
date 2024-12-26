@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.aliohin.recipesapp.databinding.ItemIngredientBinding
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class IngredientsAdapter(private val dataset: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.IngredientHolder>() {
@@ -36,12 +38,14 @@ class IngredientsAdapter(private val dataset: List<Ingredient>) :
     }
 
     private fun calculateIngredients(ingredients: String): String {
-        var calculate = 0.0
-        calculate = (ingredients.toDouble() * quantity)
-        if (calculate.toDouble() % 1.0 != 0.0) {
-            return calculate.toString().format("%.1f")
-        }
-        else return calculate.toInt().toString()
+        val totalQuantity = BigDecimal(ingredients) * BigDecimal(quantity)
+
+        val displayQuantity = totalQuantity
+            .setScale(1, RoundingMode.HALF_UP)
+            .stripTrailingZeros()
+            .toPlainString()
+
+        return displayQuantity
     }
 
 }
