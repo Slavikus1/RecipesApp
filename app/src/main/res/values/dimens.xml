@@ -9,6 +9,8 @@
     <dimen name="constraint_banner_height_224">224dp</dimen>
     <dimen name="layout_margin_32">32dp</dimen>
     <dimen name="shape_thumb_30">30dp</dimen>
+    <dimen name="padding_0">0dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
     <dimen name="item_cards_description_12">12sp</dimen>
     <dimen name="main_text_size_14">14sp</dimen>
     <dimen name="header_title_text_size_20">20sp</dimen>

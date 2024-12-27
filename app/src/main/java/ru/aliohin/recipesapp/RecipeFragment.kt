@@ -60,6 +60,8 @@ class RecipeFragment : Fragment() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 }
             })
+            binding.SeekBar.progress = 1
+            binding.tvNumberOfPortions.text = 1.toString()
         }
     }
 
