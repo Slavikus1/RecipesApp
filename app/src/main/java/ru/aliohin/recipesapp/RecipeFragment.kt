@@ -60,6 +60,7 @@ class RecipeFragment : Fragment() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 }
             })
+            binding.SeekBar.progress = 1
         }
     }
 

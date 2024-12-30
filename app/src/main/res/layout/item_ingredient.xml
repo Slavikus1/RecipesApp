@@ -28,7 +28,7 @@
         style="@style/CookingMethodDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/space_12"
+        android:layout_marginEnd="@dimen/space_12"
         android:layout_marginVertical="@dimen/main_space_half_8"
         tools:text="ст.ложки" />
 
