@@ -61,7 +61,6 @@ class RecipeFragment : Fragment() {
                 }
             })
             binding.SeekBar.progress = 1
-            binding.tvNumberOfPortions.text = 1.toString()
         }
     }
 
