@@ -1,5 +1,7 @@
 package ru.aliohin.recipesapp
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -18,6 +20,7 @@ import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
 
 class RecipeFragment : Fragment() {
+    private var favourites = getFavorites()
     private var isFavourite: Boolean = false
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -52,7 +55,9 @@ class RecipeFragment : Fragment() {
                     fromUser: Boolean
                 ) {
                     binding.tvNumberOfPortions.text = "$progress"
-                    (binding.rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(progress)
+                    (binding.rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(
+                        progress
+                    )
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -80,21 +85,31 @@ class RecipeFragment : Fragment() {
     private fun initUI(recipe: Recipe?) {
         binding.tvLabelRecipe.text = recipe?.title
         loadImageFromAssets(recipe?.imageUrl)
-        binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart_empty)
+        if (favourites.contains(recipe?.id.toString())) {
+            binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart)
+        } else binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart_empty)
         binding.imageButtonFavourites.setOnClickListener {
             isFavourite = !isFavourite
             updateFavouriteButton(recipe?.title)
+            if (isFavourite) {
+                favourites.add(recipe?.id.toString())
+                saveFavourites(favourites)
+            } else {
+                favourites.remove(recipe?.id.toString())
+                saveFavourites(favourites)
+            }
         }
     }
 
     private fun updateFavouriteButton(title: String?) {
         if (isFavourite) {
             binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart)
-            binding.imageButtonFavourites.contentDescription = getString(R.string.add_to_favourites, title)
-        }
-        else {
+            binding.imageButtonFavourites.contentDescription =
+                getString(R.string.add_to_favourites, title)
+        } else {
             binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart_empty)
-            binding.imageButtonFavourites.contentDescription = getString(R.string.remove_from_favourites, title)
+            binding.imageButtonFavourites.contentDescription =
+                getString(R.string.remove_from_favourites, title)
         }
 
     }
@@ -123,5 +138,16 @@ class RecipeFragment : Fragment() {
         val color = ContextCompat.getColor(requireContext(), R.color.white_divider)
         dividerItemDecoration.dividerColor = color
         recycler.addItemDecoration(dividerItemDecoration)
+    }
+
+    private fun saveFavourites(favourites: MutableSet<String>) {
+        val sharedPrefs = context?.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        sharedPrefs?.edit()?.putStringSet("MyFavourites", favourites)?.apply()
+    }
+
+    private fun getFavorites(): MutableSet<String> {
+        val sharedPref = context?.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val newSet = sharedPref?.getStringSet("MyFavourites", setOf()) ?: setOf()
+        return HashSet(newSet)
     }
 }
