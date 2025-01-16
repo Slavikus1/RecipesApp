@@ -39,6 +39,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="Бургер с грибами \nи сыром" />
+
+            <ImageButton
+                android:id="@+id/image_button_favourites"
+                android:layout_width="@dimen/image_button_favourites_40"
+                android:layout_height="@dimen/image_button_favourites_40"
+                android:layout_marginTop="@dimen/main_space_16"
+                android:layout_marginEnd="@dimen/main_space_16"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/add_to_favourites"
+                android:foreground="?attr/selectableItemBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_heart_empty" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -57,8 +70,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/margin_6">
+                android:layout_marginVertical="@dimen/margin_6"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -69,22 +82,21 @@
                     android:id="@+id/tvNumberOfPortions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space_3" 
-                    tools:text="5"/>
-                
+                    android:layout_marginStart="@dimen/space_3"
+                    tools:text="5" />
+
             </LinearLayout>
-            
+
             <SeekBar
                 android:id="@+id/SeekBar"
                 style="@style/styleSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:progress="2"
-                android:min="1"
                 android:max="5"
+                android:min="1"
                 android:paddingStart="@dimen/padding_0"
                 android:paddingEnd="@dimen/padding_0"
-                />
+                android:progress="2" />
         </LinearLayout>
 
 

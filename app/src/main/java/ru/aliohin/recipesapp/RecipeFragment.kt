@@ -18,6 +18,7 @@ import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
 
 class RecipeFragment : Fragment() {
+    private var isFavourite: Boolean = false
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -79,6 +80,23 @@ class RecipeFragment : Fragment() {
     private fun initUI(recipe: Recipe?) {
         binding.tvLabelRecipe.text = recipe?.title
         loadImageFromAssets(recipe?.imageUrl)
+        binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart_empty)
+        binding.imageButtonFavourites.setOnClickListener {
+            isFavourite = !isFavourite
+            updateFavouriteButton(recipe?.title)
+        }
+    }
+
+    private fun updateFavouriteButton(title: String?) {
+        if (isFavourite) {
+            binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart)
+            binding.imageButtonFavourites.contentDescription = getString(R.string.add_to_favourites, title)
+        }
+        else {
+            binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart_empty)
+            binding.imageButtonFavourites.contentDescription = getString(R.string.remove_from_favourites, title)
+        }
+
     }
 
     private fun loadImageFromAssets(imageFileName: String?) {
