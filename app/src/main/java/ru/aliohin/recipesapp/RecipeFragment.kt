@@ -85,9 +85,8 @@ class RecipeFragment : Fragment() {
     private fun initUI(recipe: Recipe?) {
         binding.tvLabelRecipe.text = recipe?.title
         loadImageFromAssets(recipe?.imageUrl)
-        if (favourites.contains(recipe?.id.toString())) {
-            binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart)
-        } else binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart_empty)
+        isFavourite = favourites.contains(recipe?.id.toString())
+        updateFavouriteButton(recipe?.title)
         binding.imageButtonFavourites.setOnClickListener {
             isFavourite = !isFavourite
             updateFavouriteButton(recipe?.title)
