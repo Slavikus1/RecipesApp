@@ -2,7 +2,6 @@ package ru.aliohin.recipesapp
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -19,9 +18,12 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
 
-const val SHARED_PREFERENCES = "MyPrefs"
-
 class RecipeFragment : Fragment() {
+
+    companion object {
+        const val SHARED_PREFERENCES = "MyPrefs"
+    }
+
     private var isFavourite: Boolean = false
     private var _binding: FragmentRecipeBinding? = null
     private val binding
