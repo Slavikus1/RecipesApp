@@ -19,13 +19,18 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
 
+const val SHARED_PREFERENCES = "MyPrefs"
+
 class RecipeFragment : Fragment() {
-    private var favourites = getFavorites()
     private var isFavourite: Boolean = false
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentRecipeBinding must not be null ")
+
+    private val sharedPref: SharedPreferences by lazy {
+        requireActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,6 +88,7 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI(recipe: Recipe?) {
+        val favourites = getFavorites()
         binding.tvLabelRecipe.text = recipe?.title
         loadImageFromAssets(recipe?.imageUrl)
         isFavourite = favourites.contains(recipe?.id.toString())
@@ -92,11 +98,10 @@ class RecipeFragment : Fragment() {
             updateFavouriteButton(recipe?.title)
             if (isFavourite) {
                 favourites.add(recipe?.id.toString())
-                saveFavourites(favourites)
             } else {
                 favourites.remove(recipe?.id.toString())
-                saveFavourites(favourites)
             }
+            saveFavourites(favourites)
         }
     }
 
@@ -140,13 +145,11 @@ class RecipeFragment : Fragment() {
     }
 
     private fun saveFavourites(favourites: MutableSet<String>) {
-        val sharedPrefs = context?.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        sharedPrefs?.edit()?.putStringSet("MyFavourites", favourites)?.apply()
+        sharedPref.edit()?.putStringSet("MyFavourites", favourites)?.apply()
     }
 
     private fun getFavorites(): MutableSet<String> {
-        val sharedPref = context?.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        val newSet = sharedPref?.getStringSet("MyFavourites", setOf()) ?: setOf()
+        val newSet = sharedPref.getStringSet("MyFavourites", setOf()) ?: setOf()
         return HashSet(newSet)
     }
 }

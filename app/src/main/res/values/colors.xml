@@ -11,4 +11,5 @@
     <color name="recipe_fragment_purple">#422952</color>
     <color name="seekbar_progress">#A1A9F9</color>
     <color name="seekbar_thumb">#525DC0</color>
+    <color name="portions_text_grey">#626466</color>
 </resources>
