@@ -26,8 +26,8 @@ class CategoryListAdapter(private val dataset: List<Category>) :
     class ViewHolder(binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
         val imageView: ImageView = binding.ivCategoryLogo
         val titleTextView: TextView = binding.tvCategoryName
-        val layoutCard = binding.clCard
         val descriptionTextView: TextView = binding.tvCategoryDescription
+        val root = binding.root
     }
 
     override fun onCreateViewHolder(
@@ -55,7 +55,7 @@ class CategoryListAdapter(private val dataset: List<Category>) :
                 null
             }
         viewHolder.imageView.setImageDrawable(drawable)
-        viewHolder.layoutCard.setOnClickListener { itemClickListener?.onItemClick(category.id) }
+        viewHolder.root.setOnClickListener { itemClickListener?.onItemClick(category.id) }
         viewHolder.imageView.contentDescription =
             viewHolder.itemView.context.getString(R.string.iV_category_list_description, category.title)
     }
