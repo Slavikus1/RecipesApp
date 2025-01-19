@@ -1,5 +1,6 @@
 package ru.aliohin.recipesapp
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class CategoryListAdapter(private val dataset: List<Category>) :
         val imageView: ImageView = binding.ivCategoryLogo
         val titleTextView: TextView = binding.tvCategoryName
         val descriptionTextView: TextView = binding.tvCategoryDescription
+        val root = binding.root
     }
 
     override fun onCreateViewHolder(
@@ -37,6 +39,7 @@ class CategoryListAdapter(private val dataset: List<Category>) :
         return ViewHolder(binding)
     }
 
+    @SuppressLint("StringFormatInvalid")
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val category: Category = dataset[position]
         viewHolder.titleTextView.text = category.title
@@ -52,7 +55,7 @@ class CategoryListAdapter(private val dataset: List<Category>) :
                 null
             }
         viewHolder.imageView.setImageDrawable(drawable)
-        viewHolder.imageView.setOnClickListener { itemClickListener?.onItemClick(category.id) }
+        viewHolder.root.setOnClickListener { itemClickListener?.onItemClick(category.id) }
         viewHolder.imageView.contentDescription =
             viewHolder.itemView.context.getString(R.string.iV_category_list_description, category.title)
     }

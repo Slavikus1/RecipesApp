@@ -50,7 +50,8 @@
             android:backgroundTint="@color/favourites_button"
             android:layout_weight="1"
             app:icon ="@drawable/ic_heart_empty"
-            app:iconGravity="textEnd">
+            app:iconGravity="textEnd"
+            app:iconSize="24dp">
         </Button>
 
     </LinearLayout>

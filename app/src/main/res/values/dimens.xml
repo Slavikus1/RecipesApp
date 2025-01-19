@@ -11,9 +11,11 @@
     <dimen name="shape_thumb_30">30dp</dimen>
     <dimen name="padding_0">0dp</dimen>
     <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
     <dimen name="image_button_favourites_40">40dp</dimen>
     <dimen name="item_cards_description_12">12sp</dimen>
     <dimen name="main_text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
     <dimen name="header_title_text_size_20">20sp</dimen>
     <dimen name="iV_recipe_height_size100">100dp</dimen>
     <dimen name="shape_seekBar_thumb_radius">2dp</dimen>

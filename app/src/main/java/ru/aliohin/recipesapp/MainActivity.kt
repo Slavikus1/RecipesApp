@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import ru.aliohin.recipesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -19,13 +20,13 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<CategoriesListFragment>(R.id.mainContainer)
+                replace<CategoriesListFragment>(R.id.mainContainer)
             }
         }
         binding.categoryButton.setOnClickListener {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<CategoriesListFragment>(R.id.mainContainer)
+                replace<CategoriesListFragment>(R.id.mainContainer)
                 addToBackStack(null)
             }
         }
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         binding.favouritesButton.setOnClickListener {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<FavoritesFragment>(R.id.mainContainer)
+                replace<FavoritesFragment>(R.id.mainContainer)
                 addToBackStack(null)
             }
         }
