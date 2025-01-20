@@ -47,6 +47,13 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="ThereIsNoFavourites" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textColor">@color/item_cards_description</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <style name="styleSeekBar" parent="TextAppearance.AppCompat">
         <item name="android:thumb">@drawable/shape_seekbar_thumb</item>
         <item name="android:progressDrawable">@drawable/shape_seekbar_progress</item>

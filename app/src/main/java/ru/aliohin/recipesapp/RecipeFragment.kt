@@ -22,6 +22,7 @@ class RecipeFragment : Fragment() {
 
     companion object {
         const val SHARED_PREFERENCES = "MyPrefs"
+        const val KEY_FAVOURITES_RECIPE = "MyFavourites"
     }
 
     private var isFavourite: Boolean = false
@@ -147,11 +148,11 @@ class RecipeFragment : Fragment() {
     }
 
     private fun saveFavourites(favourites: MutableSet<String>) {
-        sharedPref.edit()?.putStringSet("MyFavourites", favourites)?.apply()
+        sharedPref.edit()?.putStringSet(KEY_FAVOURITES_RECIPE, favourites)?.apply()
     }
 
     private fun getFavorites(): MutableSet<String> {
-        val newSet = sharedPref.getStringSet("MyFavourites", setOf()) ?: setOf()
+        val newSet = sharedPref.getStringSet(KEY_FAVOURITES_RECIPE, setOf()) ?: setOf()
         return HashSet(newSet)
     }
 }

@@ -1,13 +1,11 @@
 package ru.aliohin.recipesapp
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.aliohin.recipesapp.CategoryListAdapter.OnItemClickListener
-import ru.aliohin.recipesapp.CategoryListAdapter.ViewHolder
-import ru.aliohin.recipesapp.databinding.ItemCategoryBinding
 import ru.aliohin.recipesapp.databinding.ItemRecipeBinding
 
 class RecipesListAdapter(private val dataset: List<Recipe>) :
@@ -39,6 +37,7 @@ class RecipesListAdapter(private val dataset: List<Recipe>) :
 
     override fun getItemCount() = dataset.size
 
+    @SuppressLint("StringFormatInvalid")
     override fun onBindViewHolder(holder: RecipeHolder, position: Int) {
         val recipe: Recipe = dataset[position]
         holder.titleTextView.text = recipe.title
