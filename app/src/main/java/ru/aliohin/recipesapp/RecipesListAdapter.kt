@@ -24,6 +24,7 @@ class RecipesListAdapter(private val dataset: List<Recipe>) :
     class RecipeHolder(binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
         var titleTextView = binding.tvRecipeName
         var imageView = binding.ivRecipeLogo
+        val root = binding.root
     }
 
     override fun onCreateViewHolder(
@@ -54,6 +55,6 @@ class RecipesListAdapter(private val dataset: List<Recipe>) :
                 null
             }
         holder.imageView.setImageDrawable(drawable)
-        holder.imageView.setOnClickListener { itemClickListener?.onItemClick(recipe.id) }
+        holder.root.setOnClickListener { itemClickListener?.onItemClick(recipe.id) }
     }
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
@@ -48,8 +49,7 @@ class RecipeFragment : Fragment() {
         val recipe: Recipe? = getRecipeFromArguments()
         initRecycler(recipe)
         initUI(recipe)
-        setDividerItemDecoration(binding.rvIngredients)
-        setDividerItemDecoration(binding.rvMethod)
+        setDividerItemDecoration()
     }
 
     private fun initRecycler(recipe: Recipe?) {
@@ -138,13 +138,19 @@ class RecipeFragment : Fragment() {
         }
     }
 
-    private fun setDividerItemDecoration(recycler: RecyclerView) {
+    private fun setDividerItemDecoration() {
         val dividerItemDecoration =
-            MaterialDividerItemDecoration(recycler.context, DividerItemDecoration.VERTICAL)
-        dividerItemDecoration.isLastItemDecorated = false
-        val color = ContextCompat.getColor(requireContext(), R.color.white_divider)
-        dividerItemDecoration.dividerColor = color
-        recycler.addItemDecoration(dividerItemDecoration)
+            MaterialDividerItemDecoration(
+                requireContext(),
+                LinearLayoutManager.VERTICAL
+            ).apply {
+                setDividerColor(ContextCompat.getColor(requireContext(), R.color.white_divider))
+                isLastItemDecorated = false
+                setDividerInsetStartResource(requireContext(), R.dimen.space_12)
+                setDividerInsetEndResource(requireContext(), R.dimen.space_12)
+            }
+        binding.rvMethod.addItemDecoration(dividerItemDecoration)
+        binding.rvIngredients.addItemDecoration(dividerItemDecoration)
     }
 
     private fun saveFavourites(favourites: MutableSet<String>) {
