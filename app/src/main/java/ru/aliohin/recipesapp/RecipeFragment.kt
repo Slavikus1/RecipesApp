@@ -12,9 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
@@ -91,7 +89,7 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI(recipe: Recipe?) {
-        val favourites = getFavorites()
+        val favourites = PreferencesUtils.getFavorites(sharedPref)
         binding.tvLabelRecipe.text = recipe?.title
         loadImageFromAssets(recipe?.imageUrl)
         isFavourite = favourites.contains(recipe?.id.toString())
@@ -104,7 +102,7 @@ class RecipeFragment : Fragment() {
             } else {
                 favourites.remove(recipe?.id.toString())
             }
-            saveFavourites(favourites)
+            PreferencesUtils.saveFavourites(sharedPref, favourites)
         }
     }
 
@@ -151,14 +149,5 @@ class RecipeFragment : Fragment() {
             }
         binding.rvMethod.addItemDecoration(dividerItemDecoration)
         binding.rvIngredients.addItemDecoration(dividerItemDecoration)
-    }
-
-    private fun saveFavourites(favourites: MutableSet<String>) {
-        sharedPref.edit()?.putStringSet(KEY_FAVOURITES_RECIPE, favourites)?.apply()
-    }
-
-    private fun getFavorites(): MutableSet<String> {
-        val newSet = sharedPref.getStringSet(KEY_FAVOURITES_RECIPE, setOf()) ?: setOf()
-        return HashSet(newSet)
     }
 }

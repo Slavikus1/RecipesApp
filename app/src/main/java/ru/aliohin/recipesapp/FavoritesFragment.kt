@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import ru.aliohin.recipesapp.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
 import ru.aliohin.recipesapp.RecipeFragment.Companion.SHARED_PREFERENCES
 import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentFavoritesBinding
@@ -40,7 +39,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        val favoriteIds = getFavorites()
+        val favoriteIds = PreferencesUtils.getFavorites(sharedPref)
         val recipes = STUB.getRecipesByIds(favoriteIds)
         val adapter = RecipesListAdapter(recipes)
         binding.rvFavorites.adapter = adapter
@@ -70,11 +69,6 @@ class FavoritesFragment : Fragment() {
                 addToBackStack(null)
             }
         } else Log.e("RecipesListFragment", "Recipe not found for ID: $recipeId")
-    }
-
-    private fun getFavorites(): Set<Int> {
-        val newSet = sharedPref.getStringSet(KEY_FAVOURITES_RECIPE, setOf()) ?: setOf()
-        return newSet.mapNotNull { it.toIntOrNull() }.toSet()
     }
 
     override fun onDestroyView() {
