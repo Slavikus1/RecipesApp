@@ -1,4 +1,4 @@
-package ru.aliohin.recipesapp
+package ui.recipes.recipe
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -14,7 +14,10 @@ import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
+import data.PreferencesUtils
+import ru.aliohin.recipesapp.R
+import model.Recipe
+import ui.recipes.recipesList.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
 
 class RecipeFragment : Fragment() {
