@@ -12,8 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
@@ -22,6 +21,7 @@ class RecipeFragment : Fragment() {
 
     companion object {
         const val SHARED_PREFERENCES = "MyPrefs"
+        const val KEY_FAVOURITES_RECIPE = "MyFavourites"
     }
 
     private var isFavourite: Boolean = false
@@ -47,8 +47,7 @@ class RecipeFragment : Fragment() {
         val recipe: Recipe? = getRecipeFromArguments()
         initRecycler(recipe)
         initUI(recipe)
-        setDividerItemDecoration(binding.rvIngredients)
-        setDividerItemDecoration(binding.rvMethod)
+        setDividerItemDecoration()
     }
 
     private fun initRecycler(recipe: Recipe?) {
@@ -90,7 +89,7 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI(recipe: Recipe?) {
-        val favourites = getFavorites()
+        val favourites = PreferencesUtils.getFavorites(sharedPref)
         binding.tvLabelRecipe.text = recipe?.title
         loadImageFromAssets(recipe?.imageUrl)
         isFavourite = favourites.contains(recipe?.id.toString())
@@ -103,7 +102,7 @@ class RecipeFragment : Fragment() {
             } else {
                 favourites.remove(recipe?.id.toString())
             }
-            saveFavourites(favourites)
+            PreferencesUtils.saveFavourites(sharedPref, favourites)
         }
     }
 
@@ -137,21 +136,18 @@ class RecipeFragment : Fragment() {
         }
     }
 
-    private fun setDividerItemDecoration(recycler: RecyclerView) {
+    private fun setDividerItemDecoration() {
         val dividerItemDecoration =
-            MaterialDividerItemDecoration(recycler.context, DividerItemDecoration.VERTICAL)
-        dividerItemDecoration.isLastItemDecorated = false
-        val color = ContextCompat.getColor(requireContext(), R.color.white_divider)
-        dividerItemDecoration.dividerColor = color
-        recycler.addItemDecoration(dividerItemDecoration)
-    }
-
-    private fun saveFavourites(favourites: MutableSet<String>) {
-        sharedPref.edit()?.putStringSet("MyFavourites", favourites)?.apply()
-    }
-
-    private fun getFavorites(): MutableSet<String> {
-        val newSet = sharedPref.getStringSet("MyFavourites", setOf()) ?: setOf()
-        return HashSet(newSet)
+            MaterialDividerItemDecoration(
+                requireContext(),
+                LinearLayoutManager.VERTICAL
+            ).apply {
+                setDividerColor(ContextCompat.getColor(requireContext(), R.color.white_divider))
+                isLastItemDecorated = false
+                setDividerInsetStartResource(requireContext(), R.dimen.space_12)
+                setDividerInsetEndResource(requireContext(), R.dimen.space_12)
+            }
+        binding.rvMethod.addItemDecoration(dividerItemDecoration)
+        binding.rvIngredients.addItemDecoration(dividerItemDecoration)
     }
 }

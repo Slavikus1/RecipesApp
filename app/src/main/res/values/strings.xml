@@ -5,10 +5,12 @@
     <string name="text_burgers">Burgers</string>
     <string name="iV_Recipes_list_description">Image of recipe %1$s</string>
     <string name="iV_category_list_description">Image of category %1$s</string>
+    <string name="iV_favourites_list_description">Image of favourites %1$s</string>
     <string name="iV_recipe_description">Image of recipe</string>
     <string name="text_ingredients">Ingredients</string>
     <string name="text_cooking_method">cooking method</string>
     <string name="text_portions">Portions:</string>
     <string name="add_to_favourites">Add to favourites button %1$s</string>
     <string name="remove_from_favourites">Remove from favourites button %1$s</string>
+    <string name="text_favorites">You add no recipes in favourites</string>
 </resources>
