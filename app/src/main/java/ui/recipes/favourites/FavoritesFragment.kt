@@ -1,4 +1,4 @@
-package ru.aliohin.recipesapp
+package ui.recipes.favourites
 
 import android.content.Context
 import android.os.Bundle
@@ -10,9 +10,14 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import ru.aliohin.recipesapp.RecipeFragment.Companion.SHARED_PREFERENCES
-import ru.aliohin.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
+import data.PreferencesUtils
+import ru.aliohin.recipesapp.R
+import data.STUB
+import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
+import ui.recipes.recipesList.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentFavoritesBinding
+import ui.recipes.recipe.RecipeFragment
+import ui.recipes.recipesList.RecipesListAdapter
 
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null

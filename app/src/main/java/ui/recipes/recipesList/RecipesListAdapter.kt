@@ -1,4 +1,4 @@
-package ru.aliohin.recipesapp
+package ui.recipes.recipesList
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.aliohin.recipesapp.R
+import model.Recipe
 import ru.aliohin.recipesapp.databinding.ItemRecipeBinding
 
 class RecipesListAdapter(private val dataset: List<Recipe>) :

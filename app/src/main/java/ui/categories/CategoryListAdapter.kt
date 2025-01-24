@@ -1,4 +1,4 @@
-package ru.aliohin.recipesapp
+package ui.categories
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import model.Category
+import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.ItemCategoryBinding
 
 class CategoryListAdapter(private val dataset: List<Category>) :

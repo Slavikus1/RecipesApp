@@ -1,4 +1,8 @@
-package ru.aliohin.recipesapp
+package data
+
+import model.Category
+import model.Ingredient
+import model.Recipe
 
 object STUB {
     private val categories: List<Category> = listOf(

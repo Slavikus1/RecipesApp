@@ -1,10 +1,13 @@
-package ru.aliohin.recipesapp
+package ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.ActivityMainBinding
+import ui.categories.CategoriesListFragment
+import ui.recipes.favourites.FavoritesFragment
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null

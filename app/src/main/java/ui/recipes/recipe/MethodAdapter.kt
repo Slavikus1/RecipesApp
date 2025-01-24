@@ -1,4 +1,4 @@
-package ru.aliohin.recipesapp
+package ui.recipes.recipe
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

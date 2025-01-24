@@ -1,8 +1,9 @@
-package ru.aliohin.recipesapp
+package ui.recipes.recipe
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import model.Ingredient
 import ru.aliohin.recipesapp.databinding.ItemIngredientBinding
 import java.math.BigDecimal
 import java.math.RoundingMode

@@ -1,7 +1,7 @@
-package ru.aliohin.recipesapp
+package data
 
 import android.content.SharedPreferences
-import ru.aliohin.recipesapp.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
+import ui.recipes.recipe.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
 
 object PreferencesUtils {
     fun saveFavourites(sharedPref: SharedPreferences, favourites: MutableSet<String>) {
