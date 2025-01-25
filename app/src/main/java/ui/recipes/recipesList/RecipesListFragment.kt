@@ -1,4 +1,4 @@
-package ru.aliohin.recipesapp
+package ui.recipes.recipesList
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -10,7 +10,11 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import ru.aliohin.recipesapp.R
+import data.STUB
 import ru.aliohin.recipesapp.databinding.FragmentRecipesListBinding
+import ui.categories.CategoriesListFragment
+import ui.recipes.recipe.RecipeFragment
 
 
 class RecipesListFragment : Fragment() {

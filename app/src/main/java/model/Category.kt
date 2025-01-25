@@ -1,4 +1,4 @@
-package ru.aliohin.recipesapp
+package model
 
 data class Category(
     val id: Int,
