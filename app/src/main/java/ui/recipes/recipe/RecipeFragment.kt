@@ -12,6 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import data.PreferencesUtils
@@ -21,6 +24,7 @@ import ui.recipes.recipesList.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
 
 class RecipeFragment : Fragment() {
+    private val recipeViewModel: RecipeViewModel by viewModels()
 
     companion object {
         const val SHARED_PREFERENCES = "MyPrefs"
@@ -51,6 +55,9 @@ class RecipeFragment : Fragment() {
         initRecycler(recipe)
         initUI(recipe)
         setDividerItemDecoration()
+        recipeViewModel.recipeState.observe(viewLifecycleOwner, Observer{
+            Log.i("!!!", "IsFavourite: ${recipeViewModel.recipeState.value?.isFavourite}")
+        })
     }
 
     private fun initRecycler(recipe: Recipe?) {
