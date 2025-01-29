@@ -14,16 +14,9 @@ class RecipeViewModel(): ViewModel() {
         val numberOfPortions: Int = 1,
     )
 
-    private val _recipeState = MutableLiveData<RecipeState>()
+    private val _recipeState = MutableLiveData<RecipeState>().apply {
+        value = RecipeState()
+    }
     val recipeState: LiveData<RecipeState>
         get() = _recipeState
-
-    init {
-        _recipeState.value = RecipeState(isFavourite = true)
-        Log.i("!!!","IsFavourite now ${_recipeState.value?.isFavourite}")
-    }
-
-    fun setValue(){
-
-    }
 }

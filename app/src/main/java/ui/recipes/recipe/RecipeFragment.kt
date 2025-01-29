@@ -55,9 +55,9 @@ class RecipeFragment : Fragment() {
         initRecycler(recipe)
         initUI(recipe)
         setDividerItemDecoration()
-        recipeViewModel.recipeState.observe(viewLifecycleOwner, Observer{
+        recipeViewModel.recipeState.observe(viewLifecycleOwner) {
             Log.i("!!!", "IsFavourite: ${recipeViewModel.recipeState.value?.isFavourite}")
-        })
+        }
     }
 
     private fun initRecycler(recipe: Recipe?) {
