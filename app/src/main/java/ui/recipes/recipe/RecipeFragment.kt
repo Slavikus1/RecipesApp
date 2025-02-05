@@ -13,8 +13,6 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import data.PreferencesUtils
@@ -51,13 +49,10 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recipe: Recipe? = getRecipeFromArguments()
+        val recipe: Recipe? = arguments?.let { recipeViewModel.loadRecipe(it.getInt(ARG_RECIPE)) }
         initRecycler(recipe)
         initUI(recipe)
         setDividerItemDecoration()
-        recipeViewModel.recipeState.observe(viewLifecycleOwner) {
-            Log.i("!!!", "IsFavourite: ${recipeViewModel.recipeState.value?.isFavourite}")
-        }
     }
 
     private fun initRecycler(recipe: Recipe?) {
@@ -99,21 +94,23 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI(recipe: Recipe?) {
-        val favourites = PreferencesUtils.getFavorites(sharedPref)
-        binding.tvLabelRecipe.text = recipe?.title
-        loadImageFromAssets(recipe?.imageUrl)
-        isFavourite = favourites.contains(recipe?.id.toString())
-        updateFavouriteButton(recipe?.title)
-        binding.imageButtonFavourites.setOnClickListener {
-            isFavourite = !isFavourite
+        recipeViewModel.recipeState.observe(viewLifecycleOwner){
+            val favourites = recipeViewModel.getFavourites(sharedPref)
+            binding.tvLabelRecipe.text = recipe?.title
+            loadImageFromAssets(recipe?.imageUrl)
             updateFavouriteButton(recipe?.title)
-            if (isFavourite) {
-                favourites.add(recipe?.id.toString())
-            } else {
-                favourites.remove(recipe?.id.toString())
+            binding.imageButtonFavourites.setOnClickListener {
+                recipeViewModel.onFavoritesClicked()
+                updateFavouriteButton(recipe?.title)
+                if (recipeViewModel.recipeState.value?.isFavourite == true) {
+                    favourites.add(recipe?.id.toString())
+                } else {
+                    favourites.remove(recipe?.id.toString())
+                }
+                recipeViewModel.saveFavourites(sharedPref, favourites)
             }
-            PreferencesUtils.saveFavourites(sharedPref, favourites)
         }
+
     }
 
     private fun updateFavouriteButton(title: String?) {
