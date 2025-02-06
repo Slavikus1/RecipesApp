@@ -80,18 +80,6 @@ class RecipeFragment : Fragment() {
         }
     }
 
-    private fun getRecipeFromArguments(): Recipe? {
-        val recipe: Recipe? = arguments.let { bundle ->
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle?.getParcelable(ARG_RECIPE, Recipe::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                bundle?.getParcelable(ARG_RECIPE)
-            }
-        }
-        return recipe
-    }
-
     private fun initUI() {
         recipeViewModel.recipeState.observe(viewLifecycleOwner){
             val recipe = it.recipe
