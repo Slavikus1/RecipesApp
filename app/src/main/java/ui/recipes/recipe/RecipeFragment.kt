@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import data.PreferencesUtils
 import ru.aliohin.recipesapp.R
 import model.Recipe
 import ui.recipes.recipesList.RecipesListFragment.Companion.ARG_RECIPE
@@ -51,7 +50,7 @@ class RecipeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val recipe: Recipe? = arguments?.let { recipeViewModel.loadRecipe(it.getInt(ARG_RECIPE)) }
         initRecycler(recipe)
-        initUI(recipe)
+        initUI()
         setDividerItemDecoration()
     }
 
@@ -93,8 +92,9 @@ class RecipeFragment : Fragment() {
         return recipe
     }
 
-    private fun initUI(recipe: Recipe?) {
+    private fun initUI() {
         recipeViewModel.recipeState.observe(viewLifecycleOwner){
+            val recipe = it.recipe
             val favourites = recipeViewModel.getFavourites(sharedPref)
             binding.tvLabelRecipe.text = recipe?.title
             loadImageFromAssets(recipe?.imageUrl)

@@ -22,19 +22,19 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         KEY_FAVOURITES_RECIPE, Context.MODE_PRIVATE
     )
 
-    private val _recipeState = MutableLiveData<RecipeState>().apply {
-        value = RecipeState()
-    }
+    private val _recipeState = MutableLiveData(RecipeState())
     val recipeState: LiveData<RecipeState>
         get() = _recipeState
 
     fun loadRecipe(recipeId: Int): Recipe {
         val recipe = STUB.getRecipeById(recipeId)
         if (recipe != null) {
-            _recipeState.value?.isFavourite =
-                getFavourites(sharedPref).contains(recipe.id.toString())
-            _recipeState.value?.recipe = recipe
-            _recipeState.value?.numberOfPortions = 1
+            val isFavourite = getFavourites(sharedPref).contains(recipe.id.toString())
+            _recipeState.value = _recipeState.value?.copy(
+                recipe = recipe,
+                isFavourite = isFavourite,
+                numberOfPortions = 1
+            )
         }
         TODO("load from network")
     }
@@ -49,6 +49,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun onFavoritesClicked() {
-        _recipeState.value = _recipeState.value?.copy(isFavourite = !(_recipeState.value?.isFavourite ?: false))
+        _recipeState.value =
+            _recipeState.value?.copy(isFavourite = !(_recipeState.value?.isFavourite ?: false))
     }
 }
