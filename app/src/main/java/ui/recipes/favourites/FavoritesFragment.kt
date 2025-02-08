@@ -44,7 +44,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        val favoriteIds = PreferencesUtils.getFavorites(sharedPref)
+        val favoriteIds = PreferencesUtils.getFavourites(sharedPref)
         val recipes = STUB.getRecipesByIds(favoriteIds)
         val adapter = RecipesListAdapter(recipes)
         binding.rvFavorites.adapter = adapter
