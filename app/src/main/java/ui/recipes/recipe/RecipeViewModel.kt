@@ -13,9 +13,9 @@ import ui.recipes.recipe.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
 
     data class RecipeState(
-        var recipe: Recipe? = null,
-        var isFavourite: Boolean = false,
-        var numberOfPortions: Int = 1,
+        val recipe: Recipe? = null,
+        val isFavourite: Boolean = false,
+        val numberOfPortions: Int = 1,
     )
 
     private val sharedPref = getApplication<Application>().getSharedPreferences(
