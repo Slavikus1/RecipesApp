@@ -84,8 +84,8 @@ class RecipeFragment : Fragment() {
         recipeViewModel.recipeState.observe(viewLifecycleOwner){
             val recipe = it.recipe
             val favourites = recipeViewModel.getFavourites(sharedPref)
+            binding.ivRecipeImageHeader.setImageDrawable(it.recipeImage)
             binding.tvLabelRecipe.text = recipe?.title
-            loadImageFromAssets(recipe?.imageUrl)
             updateFavouriteButton(recipe?.title)
             binding.imageButtonFavourites.setOnClickListener {
                 recipeViewModel.onFavoritesClicked()
