@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import data.STUB
 import model.Recipe
 import ui.recipes.recipe.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
+import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
 
 class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
 
@@ -21,18 +22,17 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val recipeImage: Drawable? = null,
     )
 
-    private val sharedPref = getApplication<Application>().getSharedPreferences(
-        KEY_FAVOURITES_RECIPE, Context.MODE_PRIVATE
-    )
+    private val sharedPref: SharedPreferences by lazy { application.getSharedPreferences(
+        SHARED_PREFERENCES, Context.MODE_PRIVATE) }
 
     private val _recipeState = MutableLiveData(RecipeState())
     val recipeState: LiveData<RecipeState>
         get() = _recipeState
 
-    fun loadRecipe(recipeId: Int): Recipe {
+    fun loadRecipe(recipeId: Int): Recipe? {
         val recipe = STUB.getRecipeById(recipeId)
         if (recipe != null) {
-            val isFavourite = getFavourites(sharedPref).contains(recipe.id.toString())
+            val isFavourite = getFavourites().contains(recipe.id.toString())
             val drawable = loadImageFromAssets(recipe.imageUrl)
             _recipeState.value = _recipeState.value?.copy(
                 recipe = recipe,
@@ -41,7 +41,8 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                 recipeImage = drawable,
             )
         }
-        TODO("load from network")
+//        TODO("load from network")
+        return recipe
     }
 
     private fun loadImageFromAssets(recipeImageUrl: String): Drawable? {
@@ -55,17 +56,22 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
 
-    fun getFavourites(sharedPref: SharedPreferences): MutableSet<String> {
+    fun getFavourites(): MutableSet<String> {
         val newSet = sharedPref.getStringSet(KEY_FAVOURITES_RECIPE, setOf()) ?: setOf()
         return HashSet(newSet)
     }
 
-    fun saveFavourites(sharedPref: SharedPreferences, favourites: MutableSet<String>) {
+    fun saveFavourites(favourites: MutableSet<String>) {
         sharedPref.edit()?.putStringSet(KEY_FAVOURITES_RECIPE, favourites)?.apply()
     }
 
-    fun onFavoritesClicked() {
-        _recipeState.value =
-            _recipeState.value?.copy(isFavourite = !(_recipeState.value?.isFavourite ?: false))
+    fun onFavoritesClicked(recipeId: String) {
+        _recipeState.value.let { state ->
+            val favouritesSet = getFavourites()
+            if (favouritesSet.contains(recipeId)) favouritesSet.remove(recipeId)
+            else favouritesSet.add(recipeId)
+            saveFavourites(favouritesSet)
+            _recipeState.value = state?.copy(isFavourite = favouritesSet.contains(recipeId))
+        }
     }
 }

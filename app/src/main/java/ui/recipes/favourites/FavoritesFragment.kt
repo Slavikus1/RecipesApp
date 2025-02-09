@@ -23,7 +23,7 @@ class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding
-            ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null ")
+            ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null")
 
     private val sharedPref by lazy {
         requireActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)

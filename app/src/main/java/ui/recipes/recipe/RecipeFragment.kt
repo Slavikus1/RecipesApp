@@ -28,7 +28,6 @@ class RecipeFragment : Fragment() {
         const val KEY_FAVOURITES_RECIPE = "MyFavourites"
     }
 
-    private var isFavourite: Boolean = false
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -81,54 +80,22 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        recipeViewModel.recipeState.observe(viewLifecycleOwner){
-            val recipe = it.recipe
-            val favourites = recipeViewModel.getFavourites(sharedPref)
+        recipeViewModel.recipeState.observe(viewLifecycleOwner) {
+            val state: RecipeViewModel.RecipeState = it
+            val recipe = state.recipe
             binding.ivRecipeImageHeader.setImageDrawable(it.recipeImage)
             binding.tvLabelRecipe.text = recipe?.title
-            updateFavouriteButton(recipe?.title)
+            binding.imageButtonFavourites.setImageResource(
+                if (state.isFavourite) R.drawable.ic_heart else R.drawable.ic_heart_empty)
+            binding.imageButtonFavourites.contentDescription = getString(
+                if (state.isFavourite) R.string.add_to_favourites else R.string.remove_from_favourites,
+                state.recipe?.title
+            )
             binding.imageButtonFavourites.setOnClickListener {
-                recipeViewModel.onFavoritesClicked()
-                updateFavouriteButton(recipe?.title)
-                if (recipeViewModel.recipeState.value?.isFavourite == true) {
-                    favourites.add(recipe?.id.toString())
-                } else {
-                    favourites.remove(recipe?.id.toString())
-                }
-                recipeViewModel.saveFavourites(sharedPref, favourites)
+                recipeViewModel.onFavoritesClicked(recipe?.id.toString())
             }
         }
 
-    }
-
-    private fun updateFavouriteButton(title: String?) {
-        if (isFavourite) {
-            binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart)
-            binding.imageButtonFavourites.contentDescription =
-                getString(R.string.add_to_favourites, title)
-        } else {
-            binding.imageButtonFavourites.setImageResource(R.drawable.ic_heart_empty)
-            binding.imageButtonFavourites.contentDescription =
-                getString(R.string.remove_from_favourites, title)
-        }
-
-    }
-
-    private fun loadImageFromAssets(imageFileName: String?) {
-        if (imageFileName != null) {
-            val drawable = try {
-                requireContext().assets.open(imageFileName).use { stream ->
-                    Drawable.createFromStream(stream, null)
-                }
-            } catch (e: Exception) {
-                Log.e("RecipeFragment", "Error loading image: $imageFileName", e)
-                null
-            }
-            binding.ivRecipeImageHeader.setImageDrawable(drawable)
-        } else {
-            Log.e("RecipeFragment", "Image file name is null")
-            binding.ivRecipeImageHeader.setImageDrawable(null)
-        }
     }
 
     private fun setDividerItemDecoration() {
