@@ -56,16 +56,16 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
 
-    fun getFavourites(): MutableSet<String> {
+    private fun getFavourites(): MutableSet<String> {
         val newSet = sharedPref.getStringSet(KEY_FAVOURITES_RECIPE, setOf()) ?: setOf()
         return HashSet(newSet)
     }
 
-    fun saveFavourites(favourites: MutableSet<String>) {
+    private fun saveFavourites(favourites: MutableSet<String>) {
         sharedPref.edit()?.putStringSet(KEY_FAVOURITES_RECIPE, favourites)?.apply()
     }
 
-    fun onFavoritesClicked(recipeId: String) {
+    internal fun onFavoritesClicked(recipeId: String) {
         _recipeState.value.let { state ->
             val favouritesSet = getFavourites()
             if (favouritesSet.contains(recipeId)) favouritesSet.remove(recipeId)
