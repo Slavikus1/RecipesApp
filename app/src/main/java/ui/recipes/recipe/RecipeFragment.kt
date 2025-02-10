@@ -47,8 +47,8 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recipe: Recipe? = arguments?.let { recipeViewModel.loadRecipe(it.getInt(ARG_RECIPE)) }
-        initRecycler(recipe)
+        arguments?.getInt(ARG_RECIPE)?.let { recipeViewModel.loadRecipe(it) }
+//        initRecycler(recipe)
         initUI()
         setDividerItemDecoration()
     }

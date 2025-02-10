@@ -29,7 +29,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     val recipeState: LiveData<RecipeState>
         get() = _recipeState
 
-    fun loadRecipe(recipeId: Int): Recipe? {
+    fun loadRecipe(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
         if (recipe != null) {
             val isFavourite = getFavourites().contains(recipe.id.toString())
@@ -42,7 +42,6 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
             )
         }
 //        TODO("load from network")
-        return recipe
     }
 
     private fun loadImageFromAssets(recipeImageUrl: String): Drawable? {
