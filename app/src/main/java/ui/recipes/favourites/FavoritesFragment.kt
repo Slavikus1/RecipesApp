@@ -23,7 +23,7 @@ class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding
-            ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null ")
+            ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null")
 
     private val sharedPref by lazy {
         requireActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
@@ -67,7 +67,7 @@ class FavoritesFragment : Fragment() {
     private fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
         if (recipe != null) {
-            val bundle = bundleOf(ARG_RECIPE to recipe)
+            val bundle = bundleOf(ARG_RECIPE to recipe.id)
             parentFragmentManager.commit {
                 setReorderingAllowed(true)
                 replace<RecipeFragment>(R.id.mainContainer, args = bundle)
