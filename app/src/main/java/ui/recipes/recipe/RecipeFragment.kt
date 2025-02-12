@@ -48,35 +48,7 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getInt(ARG_RECIPE)?.let { recipeViewModel.loadRecipe(it) }
-//        initRecycler(recipe)
         initUI()
-        setDividerItemDecoration()
-    }
-
-    private fun initRecycler(recipe: Recipe?) {
-        if (recipe != null) {
-            binding.rvIngredients.adapter = IngredientsAdapter(recipe.ingredients)
-            binding.rvMethod.adapter = MethodAdapter(recipe.method)
-            binding.SeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    binding.tvNumberOfPortions.text = "$progress"
-                    (binding.rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(
-                        progress
-                    )
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-            })
-            binding.SeekBar.progress = 1
-        }
     }
 
     private fun initUI() {
@@ -94,8 +66,38 @@ class RecipeFragment : Fragment() {
             binding.imageButtonFavourites.setOnClickListener {
                 recipeViewModel.onFavoritesClicked(recipe?.id.toString())
             }
-        }
 
+            if (recipe != null) {
+                binding.rvIngredients.adapter = IngredientsAdapter(recipe.ingredients)
+                binding.rvMethod.adapter = MethodAdapter(recipe.method)
+                (binding.rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(
+                    state.numberOfPortions
+                )
+                binding.tvNumberOfPortions.text = state.numberOfPortions.toString()
+            }
+        }
+        initSeekBar()
+        setDividerItemDecoration()
+    }
+
+    private fun initSeekBar(){
+        binding.SeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(
+                seekBar: SeekBar?,
+                progress: Int,
+                fromUser: Boolean
+            ) {
+                recipeViewModel.updatePortionsCount(progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
+        binding.SeekBar.progress = 1
     }
 
     private fun setDividerItemDecoration() {

@@ -73,4 +73,8 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
             _recipeState.value = state?.copy(isFavourite = favouritesSet.contains(recipeId))
         }
     }
+
+    fun updatePortionsCount(currentCount: Int) {
+        _recipeState.value = _recipeState.value?.copy(numberOfPortions = currentCount)
+    }
 }
