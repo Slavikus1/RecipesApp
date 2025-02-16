@@ -26,4 +26,9 @@ class MethodAdapter(var dataset: List<String>) :
     }
 
     override fun getItemCount(): Int = dataset.size
+
+    fun updateDataset(newSet: List<String>){
+        dataset = newSet
+        notifyDataSetChanged()
+    }
 }

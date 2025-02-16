@@ -33,6 +33,11 @@ class IngredientsAdapter(var dataset: List<Ingredient>) :
 
     override fun getItemCount(): Int = dataset.size
 
+    fun updateDataset(newSet: List<Ingredient>){
+        dataset = newSet
+        notifyDataSetChanged()
+    }
+
     fun updateIngredients(progress: Int) {
         quantity = progress
         notifyDataSetChanged()

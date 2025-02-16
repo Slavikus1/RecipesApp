@@ -64,12 +64,10 @@ class RecipeFragment : Fragment() {
 
     private fun initUI() {
         binding.rvIngredients.adapter = recipeViewModel.recipeState.value?.recipe?.let {
-            IngredientsAdapter(
-                it.ingredients
-            )
+            IngredientsAdapter(emptyList())
         }
         binding.rvMethod.adapter =
-            recipeViewModel.recipeState.value?.recipe?.let { MethodAdapter(it.method) }
+            recipeViewModel.recipeState.value?.recipe?.let { MethodAdapter(emptyList()) }
         recipeViewModel.recipeState.observe(viewLifecycleOwner) {
             val state: RecipeViewModel.RecipeState = it
             val recipe = state.recipe
@@ -87,6 +85,8 @@ class RecipeFragment : Fragment() {
             }
 
             if (recipe != null) {
+                (binding.rvMethod.adapter as? MethodAdapter)?.updateDataset(state.recipe.method)
+                (binding.rvIngredients.adapter as? IngredientsAdapter)?.updateDataset(state.recipe.ingredients)
                 (binding.rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(
                     state.numberOfPortions
                 )
@@ -99,8 +99,8 @@ class RecipeFragment : Fragment() {
 
     private fun initSeekBar() {
         binding.SeekBar.progress = 1
-        binding.SeekBar.setOnSeekBarChangeListener(PortionSeekBarListener {
-            progress -> recipeViewModel.updatePortionsCount(progress)
+        binding.SeekBar.setOnSeekBarChangeListener(PortionSeekBarListener { progress ->
+            recipeViewModel.updatePortionsCount(progress)
         })
 
     }
