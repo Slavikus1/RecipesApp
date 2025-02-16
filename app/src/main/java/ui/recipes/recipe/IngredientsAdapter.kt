@@ -8,7 +8,7 @@ import ru.aliohin.recipesapp.databinding.ItemIngredientBinding
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class IngredientsAdapter(private val dataset: List<Ingredient>) :
+class IngredientsAdapter(var dataset: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.IngredientHolder>() {
     private var quantity = 1
 
@@ -32,6 +32,11 @@ class IngredientsAdapter(private val dataset: List<Ingredient>) :
     }
 
     override fun getItemCount(): Int = dataset.size
+
+    fun updateDataset(newSet: List<Ingredient>){
+        dataset = newSet
+        notifyDataSetChanged()
+    }
 
     fun updateIngredients(progress: Int) {
         quantity = progress

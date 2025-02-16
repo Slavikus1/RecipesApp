@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.aliohin.recipesapp.databinding.ItemMethodBinding
 
-class MethodAdapter(private val dataset: List<String>) :
+class MethodAdapter(var dataset: List<String>) :
     RecyclerView.Adapter<MethodAdapter.MethodHolder>() {
     class MethodHolder(binding: ItemMethodBinding) : RecyclerView.ViewHolder(binding.root) {
         var methodTextView = binding.tvMethodDescription
@@ -26,4 +26,9 @@ class MethodAdapter(private val dataset: List<String>) :
     }
 
     override fun getItemCount(): Int = dataset.size
+
+    fun updateDataset(newSet: List<String>){
+        dataset = newSet
+        notifyDataSetChanged()
+    }
 }
