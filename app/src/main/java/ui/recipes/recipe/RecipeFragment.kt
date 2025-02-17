@@ -11,14 +11,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.aliohin.recipesapp.R
-import model.Recipe
 import ui.recipes.recipesList.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
+
+class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) : OnSeekBarChangeListener {
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        onChangeIngredients(progress)
+    }
+
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+    }
+
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+    }
+
+}
 
 class RecipeFragment : Fragment() {
     private val recipeViewModel: RecipeViewModel by viewModels()
@@ -32,10 +47,6 @@ class RecipeFragment : Fragment() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentRecipeBinding must not be null ")
-
-    private val sharedPref: SharedPreferences by lazy {
-        requireActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,13 +63,19 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
+        binding.rvIngredients.adapter = recipeViewModel.recipeState.value?.recipe?.let {
+            IngredientsAdapter(emptyList())
+        }
+        binding.rvMethod.adapter =
+            recipeViewModel.recipeState.value?.recipe?.let { MethodAdapter(emptyList()) }
         recipeViewModel.recipeState.observe(viewLifecycleOwner) {
             val state: RecipeViewModel.RecipeState = it
             val recipe = state.recipe
             binding.ivRecipeImageHeader.setImageDrawable(it.recipeImage)
             binding.tvLabelRecipe.text = recipe?.title
             binding.imageButtonFavourites.setImageResource(
-                if (state.isFavourite) R.drawable.ic_heart else R.drawable.ic_heart_empty)
+                if (state.isFavourite) R.drawable.ic_heart else R.drawable.ic_heart_empty
+            )
             binding.imageButtonFavourites.contentDescription = getString(
                 if (state.isFavourite) R.string.add_to_favourites else R.string.remove_from_favourites,
                 state.recipe?.title
@@ -68,8 +85,8 @@ class RecipeFragment : Fragment() {
             }
 
             if (recipe != null) {
-                binding.rvIngredients.adapter = IngredientsAdapter(recipe.ingredients)
-                binding.rvMethod.adapter = MethodAdapter(recipe.method)
+                (binding.rvMethod.adapter as? MethodAdapter)?.updateDataset(state.recipe.method)
+                (binding.rvIngredients.adapter as? IngredientsAdapter)?.updateDataset(state.recipe.ingredients)
                 (binding.rvIngredients.adapter as? IngredientsAdapter)?.updateIngredients(
                     state.numberOfPortions
                 )
@@ -80,24 +97,12 @@ class RecipeFragment : Fragment() {
         setDividerItemDecoration()
     }
 
-    private fun initSeekBar(){
-        binding.SeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(
-                seekBar: SeekBar?,
-                progress: Int,
-                fromUser: Boolean
-            ) {
-                recipeViewModel.updatePortionsCount(progress)
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            }
-
-        })
+    private fun initSeekBar() {
         binding.SeekBar.progress = 1
+        binding.SeekBar.setOnSeekBarChangeListener(PortionSeekBarListener { progress ->
+            recipeViewModel.updatePortionsCount(progress)
+        })
+
     }
 
     private fun setDividerItemDecoration() {
