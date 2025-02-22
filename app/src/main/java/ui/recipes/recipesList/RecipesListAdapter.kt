@@ -10,7 +10,7 @@ import ru.aliohin.recipesapp.R
 import model.Recipe
 import ru.aliohin.recipesapp.databinding.ItemRecipeBinding
 
-class RecipesListAdapter(private val dataset: List<Recipe>) :
+class RecipesListAdapter(private var dataset: List<Recipe>) :
     RecyclerView.Adapter<RecipesListAdapter.RecipeHolder>() {
 
     private var itemClickListener: OnItemClickListener? = null
@@ -58,5 +58,9 @@ class RecipesListAdapter(private val dataset: List<Recipe>) :
             }
         holder.imageView.setImageDrawable(drawable)
         holder.root.setOnClickListener { itemClickListener?.onItemClick(recipe.id) }
+    }
+
+    fun updateData(newData: List<Recipe>) {
+        dataset = newData
     }
 }

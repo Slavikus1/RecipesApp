@@ -1,8 +1,6 @@
 package ui.recipes.recipesList
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import ru.aliohin.recipesapp.R
 import data.STUB
 import ru.aliohin.recipesapp.databinding.FragmentRecipesListBinding
@@ -18,6 +17,8 @@ import ui.recipes.recipe.RecipeFragment
 
 
 class RecipesListFragment : Fragment() {
+
+    private val recipeListViewModel: RecipesListViewModel by viewModels()
 
     private var categoryId: Int? = null
     private var categoryName: String? = null
@@ -42,51 +43,41 @@ class RecipesListFragment : Fragment() {
             categoryName = args.getString(CategoriesListFragment.ARG_CATEGORY_NAME)
             categoryImageUrl = args.getString(CategoriesListFragment.ARG_CATEGORY_IMAGE_URL)
         }
-        binding.tvRecipes.text = categoryName
-        val drawable = try {
-            Drawable.createFromStream(
-                view.context.assets.open(categoryImageUrl.toString()),
-                null
-            )
-        } catch (e: Exception) {
-            Log.d("!!!", "Image not found $categoryImageUrl")
-            null
-        }
-        binding.imageHeaderRecipe.setImageDrawable(drawable)
+        recipeListViewModel.loadRecipesListState(categoryId, categoryName, categoryImageUrl)
         initRecycler()
-
     }
 
     private fun initRecycler() {
-        categoryId = requireArguments().getInt(CategoriesListFragment.ARG_CATEGORY_ID)
-        val recipesListAdapter = RecipesListAdapter(STUB.getRecipesByCategoryId(categoryId ?: 0))
+        val recipesListAdapter = RecipesListAdapter(emptyList())
         binding.rvRecipes.adapter = recipesListAdapter
-
         recipesListAdapter.setOnItemClickListener(object :
             RecipesListAdapter.OnItemClickListener {
             override fun onItemClick(recipeId: Int) {
                 openRecipeByRecipeId(recipeId)
             }
         })
+        recipeListViewModel.recipeState.observe(viewLifecycleOwner) {
+            it.listOfRecipes?.let { it1 -> recipesListAdapter.updateData(it1) }
+            binding.tvRecipes.text = recipeListViewModel.recipeState.value?.categoryName
+            binding.imageHeaderRecipe.setImageDrawable(recipeListViewModel.recipeState.value?.categoryImage)
+        }
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
         if (recipe != null) {
-             val bundle = bundleOf(ARG_RECIPE to recipe.id)
+            val bundle = bundleOf(ARG_RECIPE to recipe.id)
             parentFragmentManager.commit {
                 setReorderingAllowed(true)
                 replace<RecipeFragment>(R.id.mainContainer, args = bundle)
                 addToBackStack(null)
             }
         } else {
-            throw IllegalStateException ("Recipes id is not found")
+            throw IllegalStateException("Recipes id is not found")
         }
     }
 
     companion object {
         const val ARG_RECIPE = "arg_recipe"
     }
-
-
 }
