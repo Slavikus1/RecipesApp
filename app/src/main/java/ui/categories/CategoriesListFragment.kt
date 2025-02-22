@@ -12,8 +12,11 @@ import ru.aliohin.recipesapp.R
 import data.STUB
 import ru.aliohin.recipesapp.databinding.FragmentCategoriesListBinding
 import ui.recipes.recipesList.RecipesListFragment
+import androidx.fragment.app.viewModels
 
 class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
+
+    private val categoryListViewModel: CategoriesListViewModel by viewModels()
 
     companion object {
         const val ARG_CATEGORY_ID = "arg_category_id"
@@ -36,6 +39,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        categoryListViewModel.loadCategories()
         initRecycler()
     }
 
@@ -45,13 +49,17 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
     }
 
     private fun initRecycler() {
-        val categoriesAdapter = CategoryListAdapter(STUB.getCategories())
+        val categoriesAdapter = CategoryListAdapter(emptyList())
         binding.rvCategory.adapter = categoriesAdapter
         categoriesAdapter.setOnItemClickListener(object : CategoryListAdapter.OnItemClickListener {
             override fun onItemClick(categoryId: Int) {
                 openRecipesByCategoryId(categoryId)
             }
         })
+        categoryListViewModel.categoriesState.observe(viewLifecycleOwner) {
+            it.list?.let { it1 -> categoriesAdapter.updateDataSet(it1) }
+        }
+
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
