@@ -12,7 +12,7 @@ import model.Category
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.ItemCategoryBinding
 
-class CategoryListAdapter(private val dataset: List<Category>) :
+class CategoryListAdapter(var dataset: List<Category>) :
     RecyclerView.Adapter<CategoryListAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
@@ -63,4 +63,9 @@ class CategoryListAdapter(private val dataset: List<Category>) :
     }
 
     override fun getItemCount() = dataset.size
+
+    fun updateDataSet(newSet: List<Category>){
+        dataset = newSet
+        notifyDataSetChanged()
+    }
 }
