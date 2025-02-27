@@ -11,6 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.aliohin.recipesapp.R
 import data.STUB
 import ui.recipes.recipesList.RecipesListFragment.Companion.ARG_RECIPE
@@ -64,11 +65,7 @@ class FavoritesFragment : Fragment() {
         val recipe = STUB.getRecipeById(recipeId)
         if (recipe != null) {
             val bundle = bundleOf(ARG_RECIPE to recipe.id)
-            parentFragmentManager.commit {
-                setReorderingAllowed(true)
-                replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-                addToBackStack(null)
-            }
+            findNavController().navigate(R.id.recipeFragment, bundle)
         } else Log.e("RecipesListFragment", "Recipe not found for ID: $recipeId")
     }
 
