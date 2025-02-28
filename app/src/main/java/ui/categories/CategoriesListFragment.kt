@@ -13,6 +13,7 @@ import data.STUB
 import ru.aliohin.recipesapp.databinding.FragmentCategoriesListBinding
 import ui.recipes.recipesList.RecipesListFragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 
 class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
 
@@ -70,10 +71,6 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
             ARG_CATEGORY_NAME to categoryName,
             ARG_CATEGORY_IMAGE_URL to categoryImageUrl,
         )
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
-            addToBackStack(null)
-        }
+        findNavController().navigate(R.id.recipesListFragment, bundle)
     }
 }

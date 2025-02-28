@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.aliohin.recipesapp.R
 import data.STUB
 import ru.aliohin.recipesapp.databinding.FragmentRecipesListBinding
@@ -67,11 +68,7 @@ class RecipesListFragment : Fragment() {
         val recipe = STUB.getRecipeById(recipeId)
         if (recipe != null) {
             val bundle = bundleOf(ARG_RECIPE to recipe.id)
-            parentFragmentManager.commit {
-                setReorderingAllowed(true)
-                replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-                addToBackStack(null)
-            }
+            findNavController().navigate(R.id.recipeFragment, bundle)
         } else {
             throw IllegalStateException("Recipes id is not found")
         }
