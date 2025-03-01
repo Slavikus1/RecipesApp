@@ -17,16 +17,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.categoryButton.setOnClickListener {
             supportFragmentManager.commit {
-                findNavController(R.id.nav_host_fragment).navigate(R.id.categoriesListFragment)
+                val navController = findNavController(R.id.nav_host_fragment)
+                if (navController.currentDestination?.id != R.id.categoriesListFragment) navController.navigate(
+                    R.id.action_global_categoriesListFragment
+                )
             }
         }
 
         binding.favouritesButton.setOnClickListener {
             supportFragmentManager.commit {
-                findNavController(R.id.nav_host_fragment).navigate(R.id.favoritesFragment)
+                val navController = findNavController(R.id.nav_host_fragment)
+                if (navController.currentDestination?.id != R.id.favoritesFragment) navController.navigate(
+                    R.id.action_global_favouritesListFragment
+                )
             }
         }
     }

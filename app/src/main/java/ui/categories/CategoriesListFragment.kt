@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import ru.aliohin.recipesapp.R
 import data.STUB
 import ru.aliohin.recipesapp.databinding.FragmentCategoriesListBinding
-import ui.recipes.recipesList.RecipesListFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 
@@ -71,6 +68,6 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
             ARG_CATEGORY_NAME to categoryName,
             ARG_CATEGORY_IMAGE_URL to categoryImageUrl,
         )
-        findNavController().navigate(R.id.recipesListFragment, bundle)
+        findNavController().navigate(R.id.action_categoriesListFragment_to_recipesListFragment, bundle)
     }
 }

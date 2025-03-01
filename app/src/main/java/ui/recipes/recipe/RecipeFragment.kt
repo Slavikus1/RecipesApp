@@ -1,11 +1,6 @@
 package ui.recipes.recipe
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +9,10 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.aliohin.recipesapp.R
-import ui.recipes.recipesList.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
 
 class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) : OnSeekBarChangeListener {
@@ -37,6 +32,7 @@ class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) : OnSeekBar
 
 class RecipeFragment : Fragment() {
     private val recipeViewModel: RecipeViewModel by viewModels()
+    private val recipeArgs: RecipeFragmentArgs by navArgs()
 
     companion object {
         const val SHARED_PREFERENCES = "MyPrefs"
@@ -58,7 +54,8 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getInt(ARG_RECIPE)?.let { recipeViewModel.loadRecipe(it) }
+        val recipeId = recipeArgs.recipeId
+        recipeViewModel.loadRecipe(recipeId)
         initUI()
     }
 

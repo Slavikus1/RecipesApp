@@ -1,6 +1,5 @@
 package ui.recipes.favourites
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,15 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.aliohin.recipesapp.R
 import data.STUB
-import ui.recipes.recipesList.RecipesListFragment.Companion.ARG_RECIPE
 import ru.aliohin.recipesapp.databinding.FragmentFavoritesBinding
-import ui.recipes.recipe.RecipeFragment
 import ui.recipes.recipesList.RecipesListAdapter
 
 class FavoritesFragment : Fragment() {
@@ -49,7 +44,7 @@ class FavoritesFragment : Fragment() {
                 openRecipeByRecipeId(recipeId)
             }
         })
-        favouritesViewModel.favouritesState.observe(viewLifecycleOwner){
+        favouritesViewModel.favouritesState.observe(viewLifecycleOwner) {
             it.favouritesList?.let { it1 -> adapter.updateData(it1) }
             if (it.favouritesList?.isEmpty() == true) {
                 binding.tvFavorites.visibility = View.VISIBLE
@@ -64,8 +59,9 @@ class FavoritesFragment : Fragment() {
     private fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
         if (recipe != null) {
-            val bundle = bundleOf(ARG_RECIPE to recipe.id)
-            findNavController().navigate(R.id.recipeFragment, bundle)
+            val action =
+                FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(recipe.id)
+            findNavController().navigate(action)
         } else Log.e("RecipesListFragment", "Recipe not found for ID: $recipeId")
     }
 
