@@ -67,14 +67,11 @@ class RecipesListFragment : Fragment() {
     private fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
         if (recipe != null) {
-            val bundle = bundleOf(ARG_RECIPE to recipe.id)
-            findNavController().navigate(R.id.recipeFragment, bundle)
+            val action =
+                RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipe.id)
+            findNavController().navigate(action)
         } else {
             throw IllegalStateException("Recipes id is not found")
         }
-    }
-
-    companion object {
-        const val ARG_RECIPE = "arg_recipe"
     }
 }
