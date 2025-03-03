@@ -16,12 +16,6 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
 
     private val categoryListViewModel: CategoriesListViewModel by viewModels()
 
-    companion object {
-        const val ARG_CATEGORY_ID = "arg_category_id"
-        const val ARG_CATEGORY_NAME = "arg_category_name"
-        const val ARG_CATEGORY_IMAGE_URL = "arg_category_image_url"
-    }
-
     private var _binding: FragmentCategoriesListBinding? = null
     private val binding
         get() = _binding
@@ -61,13 +55,10 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val categoryName = STUB.getCategories().find { it.id == categoryId }?.title
-        val categoryImageUrl = STUB.getCategories().find { it.id == categoryId }?.imageUrl
-        val bundle = bundleOf(
-            ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to categoryName,
-            ARG_CATEGORY_IMAGE_URL to categoryImageUrl,
-        )
-        findNavController().navigate(R.id.action_categoriesListFragment_to_recipesListFragment, bundle)
+        val category = STUB.getCategories().find { it.id == categoryId }
+        if (category != null){
+            findNavController().navigate(CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(category))
+        }
+        else throw IllegalArgumentException("Category must not be null")
     }
 }
