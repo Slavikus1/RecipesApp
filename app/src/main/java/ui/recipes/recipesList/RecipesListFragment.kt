@@ -5,21 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import ru.aliohin.recipesapp.R
-import data.STUB
+import androidx.navigation.fragment.navArgs
 import ru.aliohin.recipesapp.databinding.FragmentRecipesListBinding
-import ui.categories.CategoriesListFragment
-import ui.recipes.recipe.RecipeFragment
-
 
 class RecipesListFragment : Fragment() {
 
     private val recipeListViewModel: RecipesListViewModel by viewModels()
+    private val recipeListArgs: RecipesListFragmentArgs by navArgs()
 
     private var categoryId: Int? = null
     private var categoryName: String? = null
@@ -39,11 +33,10 @@ class RecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireArguments().let { args ->
-            categoryId = args.getInt(CategoriesListFragment.ARG_CATEGORY_ID)
-            categoryName = args.getString(CategoriesListFragment.ARG_CATEGORY_NAME)
-            categoryImageUrl = args.getString(CategoriesListFragment.ARG_CATEGORY_IMAGE_URL)
-        }
+        categoryId = recipeListArgs.Category.id
+        categoryName = recipeListArgs.Category.title
+        categoryImageUrl = recipeListArgs.Category.imageUrl
+
         recipeListViewModel.loadRecipesListState(categoryId, categoryName, categoryImageUrl)
         initRecycler()
     }
@@ -65,13 +58,10 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
-        if (recipe != null) {
-            val action =
-                RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipe.id)
-            findNavController().navigate(action)
-        } else {
-            throw IllegalStateException("Recipes id is not found")
-        }
+        findNavController().navigate(
+            RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
+                recipeId
+            )
+        )
     }
 }

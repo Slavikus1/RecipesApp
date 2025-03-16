@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_categories_list">
         <action
             android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
-            app:destination="@id/recipesListFragment" />
+            app:destination="@id/recipesListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/recipeFragment"
@@ -30,7 +34,14 @@
         tools:layout="@layout/fragment_recipes_list">
         <action
             android:id="@+id/action_recipesListFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <argument
+            android:name="Category"
+            app:argType="model.Category" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -39,14 +50,26 @@
         tools:layout="@layout/fragment_favorites">
         <action
             android:id="@+id/action_favoritesFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 
     <action
         android:id="@+id/action_global_categoriesListFragment"
-        app:destination="@+id/categoriesListFragment" />
+        app:destination="@+id/categoriesListFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out" />
 
     <action
         android:id="@+id/action_global_favouritesListFragment"
-        app:destination="@+id/favoritesFragment" />
+        app:destination="@+id/favoritesFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out" />
 </navigation>
