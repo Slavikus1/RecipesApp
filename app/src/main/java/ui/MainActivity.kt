@@ -5,17 +5,22 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.navigation.findNavController
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import model.Category
 import model.Recipe
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.ActivityMainBinding
-import java.net.HttpURLConnection
-import java.net.URL
 
 import java.util.concurrent.Executors
 
 private const val API_CATEGORIES = "https://recipes.androidsprint.ru/api/category"
+private val httpInterceptor = HttpLoggingInterceptor().apply {
+    level = HttpLoggingInterceptor.Level.BODY
+}
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -23,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null ")
     private val executor = Executors.newFixedThreadPool(10)
-    private var categoriesId: MutableList<Int> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,37 +56,51 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadCategories() {
-        val thread = Thread {
+        executor.execute {
             try {
-                val connection = URL(API_CATEGORIES).openConnection() as HttpURLConnection
-                connection.connect()
-                val response = connection.inputStream.bufferedReader().readText()
+                val client = OkHttpClient.Builder()
+                    .addInterceptor(httpInterceptor)
+                    .build()
 
-                Log.i("!!!", "responseCode${connection.responseCode}")
-                Log.i("!!!", "responseMessage${connection.responseMessage}")
-                Log.i("!!!", "Выполняю запрос в потоке ${Thread.currentThread().name}")
-                Log.i("!!!", "Body: $response")
-                val categories: List<Category> = Json.decodeFromString(response)
-                for (category in categories) {
-                    categoriesId.add(category.id)
-                    getRecipesWithCategoriesId(category.id)
-                }
-                Log.i("!!!", "categories: $categories")
+                val request = Request.Builder()
+                    .url(API_CATEGORIES)
+                    .build()
+
+                val response = client.newCall(request).execute()
+                if (response.isSuccessful) {
+                    val responseBody = response.body?.string()
+                    val categories: List<Category>? =
+                        responseBody?.let { Json.decodeFromString(it) }
+                    categories?.map { it.id }?.forEach { getRecipesWithCategoriesId(it) }
+                    Log.i("!!!", "categories: $categories")
+                } else Log.i("!!!", "error - ${response.code} - ${response.message}")
+                response.close()
             } catch (e: Exception) {
-                Log.e("!!!", "Ошибка при выполнении запроса ${e.message}")
+                Log.e("!!!", "Ошибка при выполнении запроса категорий ${e.message}")
             }
         }
-        thread.start()
     }
 
     private fun getRecipesWithCategoriesId(categoryId: Int) {
         executor.execute {
             try {
-                val connection =
-                    URL("$API_CATEGORIES/$categoryId/recipes").openConnection() as HttpURLConnection
-                val response = connection.inputStream.bufferedReader().readText()
-                val recipes: List<Recipe> = Json.decodeFromString(response)
-                Log.i("!!!", "recipes: $recipes")
+                val client = OkHttpClient.Builder()
+                    .addInterceptor(httpInterceptor)
+                    .build()
+
+                val request = Request.Builder()
+                    .url("$API_CATEGORIES/$categoryId/recipes")
+                    .build()
+                val response = client.newCall(request).execute()
+                if (response.isSuccessful) {
+                    val responseBody = response.body?.string()
+                    if (responseBody != null) {
+                        Log.i("!!!", responseBody)
+                    }
+                    val recipes: List<Recipe>? = responseBody?.let { Json.decodeFromString(it) }
+                    Log.i("!!!", "recipes: $recipes")
+                } else Log.i("!!!", "error - ${response.code} - ${response.message}")
+                response.close()
             } catch (e: Exception) {
                 Log.e("!!!", "Ошибка при выполнии запроса списка рецептов ${e.message}")
             }
