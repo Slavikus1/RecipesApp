@@ -43,15 +43,18 @@ android {
 }
 
 dependencies {
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.navigation.dynamic.features.fragment)
     androidTestImplementation(libs.androidx.navigation.testing)
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
