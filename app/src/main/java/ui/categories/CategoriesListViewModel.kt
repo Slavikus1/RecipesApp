@@ -9,6 +9,7 @@ import model.Category
 class CategoriesListViewModel : ViewModel() {
     data class CategoriesListState(
         var list: List<Category>? = null,
+        var isShowError: Boolean = false,
     )
 
     private val _categoriesState = MutableLiveData(CategoriesListState())
@@ -16,13 +17,16 @@ class CategoriesListViewModel : ViewModel() {
         get() = _categoriesState
 
     fun loadCategories() {
-        val repository = RecipeRepository()
-        repository.getCategories { categories ->
-            if (!categories.isNullOrEmpty()){
+        RecipeRepository.INSTANSE.getCategories { categories ->
+            if (!categories.isNullOrEmpty()) {
                 _categoriesState.postValue(CategoriesListState(list = categories))
-            }
-            else {
-                _categoriesState.postValue(CategoriesListState(emptyList()))
+            } else {
+                _categoriesState.postValue(
+                    CategoriesListState(
+                        isShowError = true,
+                        list = emptyList()
+                    )
+                )
             }
         }
     }

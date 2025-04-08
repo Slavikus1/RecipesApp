@@ -43,13 +43,8 @@ class FavoritesFragment : Fragment() {
             }
         })
         favouritesViewModel.favouritesState.observe(viewLifecycleOwner) {
-            it.favouritesList?.let { it1 ->
-                adapter.updateData(it1)
-                if (it1.isEmpty()) Toast.makeText(
-                    requireContext(),
-                    "Нет данных об избранном",
-                    Toast.LENGTH_SHORT
-                ).show()
+            it.favouritesList?.let { favouritesList ->
+                adapter.updateData(favouritesList)
             }
             if (it.favouritesList?.isEmpty() == true) {
                 binding.tvFavorites.visibility = View.VISIBLE
@@ -58,6 +53,11 @@ class FavoritesFragment : Fragment() {
                 binding.tvFavorites.visibility = View.GONE
                 binding.rvFavorites.visibility = View.VISIBLE
             }
+            if (it.isShowError) Toast.makeText(
+                requireContext(),
+                "Ошибка загрузки избранного",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

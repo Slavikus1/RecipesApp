@@ -89,6 +89,11 @@ class RecipeFragment : Fragment() {
                     state.numberOfPortions
                 )
                 binding.tvNumberOfPortions.text = state.numberOfPortions.toString()
+                if (state.isShowError) Toast.makeText(
+                    requireContext(),
+                    "Ощибка загрузки рецепта",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         initSeekBar()

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -54,6 +55,11 @@ class RecipesListFragment : Fragment() {
             it.listOfRecipes?.let { it1 -> recipesListAdapter.updateData(it1) }
             binding.tvRecipes.text = recipeListViewModel.recipeState.value?.categoryName
             binding.imageHeaderRecipe.setImageDrawable(recipeListViewModel.recipeState.value?.categoryImage)
+            if (it.isShowError) Toast.makeText(
+                requireContext(),
+                "Ошибка загрузки рецептов",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

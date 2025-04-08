@@ -45,9 +45,9 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
         categoryListViewModel.categoriesState.observe(viewLifecycleOwner) {
             it.list?.let { it1 ->
                 categoriesAdapter.updateDataSet(it1)
-                if (it1.isEmpty()) Toast.makeText(
+                if (it.isShowError) Toast.makeText(
                     requireContext(),
-                    "Нет доступных категорий рецептов",
+                    "Ошибка при загрузке категорий",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -61,7 +61,8 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val category = categoryListViewModel.categoriesState.value?.list?.find { it.id == categoryId }
+        val category =
+            categoryListViewModel.categoriesState.value?.list?.find { it.id == categoryId }
         if (category != null) {
             findNavController().navigate(
                 CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(

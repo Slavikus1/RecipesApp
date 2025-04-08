@@ -20,6 +20,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val isFavourite: Boolean = false,
         val numberOfPortions: Int = 1,
         val recipeImage: Drawable? = null,
+        var isShowError: Boolean = false,
     )
 
     private val sharedPref: SharedPreferences by lazy { application.getSharedPreferences(
@@ -30,8 +31,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         get() = _recipeState
 
     fun loadRecipe(recipeId: Int) {
-        val repository = RecipeRepository()
-        repository.getRecipeById(recipeId){ recipe: Recipe? ->
+        RecipeRepository.INSTANSE.getRecipeById(recipeId){ recipe: Recipe? ->
             if (recipe != null){
                 val isFavourite = getFavourites().contains(recipe.id.toString())
                 val drawable = loadImageFromAssets(recipe.imageUrl)
@@ -42,7 +42,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                     recipeImage = drawable,
                 ))
             }
-            else _recipeState.postValue(RecipeState())
+            else _recipeState.postValue(RecipeState(isShowError = true))
         }
     }
 

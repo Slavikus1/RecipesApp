@@ -9,7 +9,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.http.HTTP
 import java.util.concurrent.Executors
 
 const val CONTENT_TYPE = "application/Json"
@@ -84,4 +83,8 @@ class RecipeRepository {
         }
 
     }
+    companion object {
+        val INSTANSE: RecipeRepository by lazy { RecipeRepository() }
+    }
 }
+

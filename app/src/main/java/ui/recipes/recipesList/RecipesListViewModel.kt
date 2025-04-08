@@ -14,7 +14,8 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
     data class RecipesListState(
         val listOfRecipes: List<Recipe>? = null,
         val categoryImage: Drawable? = null,
-        val categoryName: String? = null
+        val categoryName: String? = null,
+        var isShowError: Boolean = false,
     )
 
     private val _recipeState = MutableLiveData(RecipesListState())
@@ -26,9 +27,8 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
         if (categoryImageUrl != null) {
             drawable = loadImageFromAssets(categoryImageUrl)
         }
-        val repository = RecipeRepository()
         if (categoryId != null) {
-            repository.getRecipesByCategoryId(categoryId){ recipes ->
+            RecipeRepository.INSTANSE.getRecipesByCategoryId(categoryId){ recipes ->
                 if (!recipes.isNullOrEmpty()){
                     _recipeState.postValue(RecipesListState(
                         listOfRecipes = recipes,
@@ -37,7 +37,7 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
                     ))
                 }
                 else {
-                    _recipeState.postValue(RecipesListState())
+                    _recipeState.postValue(RecipesListState(isShowError = true))
                 }
 
             }

@@ -14,6 +14,7 @@ import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
 class FavouritesViewModel(private val application: Application) : AndroidViewModel(application) {
     data class FavouritesState(
         var favouritesList: List<Recipe>? = null,
+        var isShowError: Boolean = false
     )
 
     private val shredPreferences by lazy {
@@ -29,12 +30,16 @@ class FavouritesViewModel(private val application: Application) : AndroidViewMod
 
     fun loadFavouritesState() {
         val favouritesIds = getFavourites(shredPreferences)
-        Log.i("!!!","favourites - $favouritesIds")
-        val repository = RecipeRepository()
-        repository.getRecipesByIds(favouritesIds) { recipes ->
+        Log.i("!!!", "favourites - $favouritesIds")
+        RecipeRepository.INSTANSE.getRecipesByIds(favouritesIds) { recipes ->
             if (!recipes.isNullOrEmpty()) {
                 _favouritesState.postValue(FavouritesState(favouritesList = recipes))
-            } else _favouritesState.postValue(FavouritesState(favouritesList = emptyList()))
+            } else _favouritesState.postValue(
+                FavouritesState(
+                    favouritesList = emptyList(),
+                    isShowError = true,
+                )
+            )
         }
     }
 
