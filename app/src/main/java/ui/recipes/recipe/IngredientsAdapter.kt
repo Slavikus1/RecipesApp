@@ -1,5 +1,6 @@
 package ui.recipes.recipe
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -44,8 +45,13 @@ class IngredientsAdapter(var dataset: List<Ingredient>) :
     }
 
     private fun calculateIngredients(ingredients: String): String {
-        val totalQuantity = BigDecimal(ingredients) * BigDecimal(quantity)
-
+        val ingredientQuantity = try {
+            BigDecimal(ingredients)
+        } catch (e: NumberFormatException) {
+            Log.e("IngredientsAdapter","${e.message}")
+            return "0"
+        }
+        val totalQuantity = ingredientQuantity * BigDecimal(quantity)
         val displayQuantity = totalQuantity
             .setScale(1, RoundingMode.HALF_UP)
             .stripTrailingZeros()

@@ -3,9 +3,10 @@ package ui.recipes.favourites
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import data.STUB
+import data.RecipeRepository
 import model.Recipe
 import ui.recipes.recipe.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
 import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
@@ -13,6 +14,7 @@ import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
 class FavouritesViewModel(private val application: Application) : AndroidViewModel(application) {
     data class FavouritesState(
         var favouritesList: List<Recipe>? = null,
+        var isShowError: Boolean = false
     )
 
     private val shredPreferences by lazy {
@@ -28,12 +30,21 @@ class FavouritesViewModel(private val application: Application) : AndroidViewMod
 
     fun loadFavouritesState() {
         val favouritesIds = getFavourites(shredPreferences)
-        val recipes: List<Recipe> = STUB.getRecipesByIds(favouritesIds)
-        _favouritesState.value?.favouritesList = recipes
+        Log.i("!!!", "favourites - $favouritesIds")
+        RecipeRepository.INSTANSE.getRecipesByIds(favouritesIds) { recipes ->
+            if (!recipes.isNullOrEmpty()) {
+                _favouritesState.postValue(FavouritesState(favouritesList = recipes))
+            } else _favouritesState.postValue(
+                FavouritesState(
+                    favouritesList = emptyList(),
+                    isShowError = true,
+                )
+            )
+        }
     }
 
-    private fun getFavourites(sharedPref: SharedPreferences): MutableSet<String> {
+    private fun getFavourites(sharedPref: SharedPreferences): String {
         val newSet = sharedPref.getStringSet(KEY_FAVOURITES_RECIPE, setOf()) ?: setOf()
-        return HashSet(newSet)
+        return newSet.joinToString(",")
     }
 }

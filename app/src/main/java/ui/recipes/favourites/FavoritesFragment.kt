@@ -6,11 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import ru.aliohin.recipesapp.R
-import data.STUB
 import ru.aliohin.recipesapp.databinding.FragmentFavoritesBinding
 import ui.recipes.recipesList.RecipesListAdapter
 
@@ -45,7 +43,9 @@ class FavoritesFragment : Fragment() {
             }
         })
         favouritesViewModel.favouritesState.observe(viewLifecycleOwner) {
-            it.favouritesList?.let { it1 -> adapter.updateData(it1) }
+            it.favouritesList?.let { favouritesList ->
+                adapter.updateData(favouritesList)
+            }
             if (it.favouritesList?.isEmpty() == true) {
                 binding.tvFavorites.visibility = View.VISIBLE
                 binding.rvFavorites.visibility = View.GONE
@@ -53,11 +53,17 @@ class FavoritesFragment : Fragment() {
                 binding.tvFavorites.visibility = View.GONE
                 binding.rvFavorites.visibility = View.VISIBLE
             }
+            if (it.isShowError) Toast.makeText(
+                requireContext(),
+                "Ошибка загрузки избранного",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
+        val recipe =
+            favouritesViewModel.favouritesState.value?.favouritesList?.find { it.id == recipeId }
         if (recipe != null) {
             val action =
                 FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(recipe.id)

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -60,11 +61,6 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        binding.rvIngredients.adapter = recipeViewModel.recipeState.value?.recipe?.let {
-            IngredientsAdapter(emptyList())
-        }
-        binding.rvMethod.adapter =
-            recipeViewModel.recipeState.value?.recipe?.let { MethodAdapter(emptyList()) }
         recipeViewModel.recipeState.observe(viewLifecycleOwner) {
             val state: RecipeViewModel.RecipeState = it
             val recipe = state.recipe
@@ -80,6 +76,11 @@ class RecipeFragment : Fragment() {
             binding.imageButtonFavourites.setOnClickListener {
                 recipeViewModel.onFavoritesClicked(recipe?.id.toString())
             }
+            binding.rvIngredients.adapter = recipeViewModel.recipeState.value?.recipe?.let {
+                IngredientsAdapter(emptyList())
+            }
+            binding.rvMethod.adapter =
+                recipeViewModel.recipeState.value?.recipe?.let { MethodAdapter(emptyList()) }
 
             if (recipe != null) {
                 (binding.rvMethod.adapter as? MethodAdapter)?.updateDataset(state.recipe.method)
@@ -88,6 +89,11 @@ class RecipeFragment : Fragment() {
                     state.numberOfPortions
                 )
                 binding.tvNumberOfPortions.text = state.numberOfPortions.toString()
+                if (state.isShowError) Toast.makeText(
+                    requireContext(),
+                    "Ощибка загрузки рецепта",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         initSeekBar()

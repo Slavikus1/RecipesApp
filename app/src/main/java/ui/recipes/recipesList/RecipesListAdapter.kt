@@ -62,5 +62,6 @@ class RecipesListAdapter(private var dataset: List<Recipe>) :
 
     fun updateData(newData: List<Recipe>) {
         dataset = newData
+        notifyDataSetChanged()
     }
 }

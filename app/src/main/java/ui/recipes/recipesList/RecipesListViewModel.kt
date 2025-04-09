@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import data.STUB
+import data.RecipeRepository
 
 import model.Recipe
 
@@ -14,7 +14,8 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
     data class RecipesListState(
         val listOfRecipes: List<Recipe>? = null,
         val categoryImage: Drawable? = null,
-        val categoryName: String? = null
+        val categoryName: String? = null,
+        var isShowError: Boolean = false,
     )
 
     private val _recipeState = MutableLiveData(RecipesListState())
@@ -26,13 +27,22 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
         if (categoryImageUrl != null) {
             drawable = loadImageFromAssets(categoryImageUrl)
         }
-        val recipesList = categoryId?.let { STUB.getRecipesByCategoryId(it) }
-        _recipeState.value = RecipesListState(
-            listOfRecipes = recipesList,
-            categoryImage = drawable,
-            categoryName = categoryName,
-        )
+        if (categoryId != null) {
+            RecipeRepository.INSTANSE.getRecipesByCategoryId(categoryId){ recipes ->
+                if (!recipes.isNullOrEmpty()){
+                    _recipeState.postValue(RecipesListState(
+                        listOfRecipes = recipes,
+                        categoryImage = drawable,
+                        categoryName = categoryName,
+                    ))
+                }
+                else {
+                    _recipeState.postValue(RecipesListState(isShowError = true))
+                }
 
+            }
+        }
+        else Log.i("!!!", "Category id must not be null")
     }
 
     private fun loadImageFromAssets(categoryImageUrl: String): Drawable? {

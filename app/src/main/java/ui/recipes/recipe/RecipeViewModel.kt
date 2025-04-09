@@ -8,7 +8,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import data.STUB
+import data.RecipeRepository
 import model.Recipe
 import ui.recipes.recipe.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
 import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
@@ -20,6 +20,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val isFavourite: Boolean = false,
         val numberOfPortions: Int = 1,
         val recipeImage: Drawable? = null,
+        var isShowError: Boolean = false,
     )
 
     private val sharedPref: SharedPreferences by lazy { application.getSharedPreferences(
@@ -30,18 +31,19 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         get() = _recipeState
 
     fun loadRecipe(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
-        if (recipe != null) {
-            val isFavourite = getFavourites().contains(recipe.id.toString())
-            val drawable = loadImageFromAssets(recipe.imageUrl)
-            _recipeState.value = _recipeState.value?.copy(
-                recipe = recipe,
-                isFavourite = isFavourite,
-                numberOfPortions = 1,
-                recipeImage = drawable,
-            )
+        RecipeRepository.INSTANSE.getRecipeById(recipeId){ recipe: Recipe? ->
+            if (recipe != null){
+                val isFavourite = getFavourites().contains(recipe.id.toString())
+                val drawable = loadImageFromAssets(recipe.imageUrl)
+                _recipeState.postValue(_recipeState.value?.copy(
+                    recipe = recipe,
+                    isFavourite = isFavourite,
+                    numberOfPortions = 1,
+                    recipeImage = drawable,
+                ))
+            }
+            else _recipeState.postValue(RecipeState(isShowError = true))
         }
-//        TODO("load from network")
     }
 
     private fun loadImageFromAssets(recipeImageUrl: String): Drawable? {
