@@ -15,6 +15,7 @@ const val CONTENT_TYPE = "application/Json"
 const val BASE_URL = "https://recipes.androidsprint.ru/api/"
 
 class RecipeRepository {
+    val loadImageUrl = "https://recipes.androidsprint.ru/api/images/"
     private val executor = Executors.newFixedThreadPool(10)
     private val interceptor =
         HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }

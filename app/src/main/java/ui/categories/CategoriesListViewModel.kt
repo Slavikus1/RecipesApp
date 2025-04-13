@@ -19,10 +19,10 @@ class CategoriesListViewModel : ViewModel() {
     fun loadCategories() {
         RecipeRepository.INSTANSE.getCategories { categories ->
             if (!categories.isNullOrEmpty()) {
-                _categoriesState.postValue(CategoriesListState(list = categories))
+                _categoriesState.postValue(categoriesState.value?.copy(list = categories))
             } else {
                 _categoriesState.postValue(
-                    CategoriesListState(
+                    categoriesState.value?.copy(
                         isShowError = true,
                         list = emptyList()
                     )

@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.FragmentRecipesListBinding
 
 class RecipesListFragment : Fragment() {
@@ -54,7 +56,11 @@ class RecipesListFragment : Fragment() {
         recipeListViewModel.recipeState.observe(viewLifecycleOwner) {
             it.listOfRecipes?.let { it1 -> recipesListAdapter.updateData(it1) }
             binding.tvRecipes.text = recipeListViewModel.recipeState.value?.categoryName
-            binding.imageHeaderRecipe.setImageDrawable(recipeListViewModel.recipeState.value?.categoryImage)
+            Glide.with(this)
+                .load(it.categoryImageUrl)
+                .placeholder(R.drawable.img_placeholder)
+                .error(R.drawable.img_error)
+                .into(binding.imageHeaderRecipe)
             if (it.isShowError) Toast.makeText(
                 requireContext(),
                 "Ошибка загрузки рецептов",

@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import data.RecipeRepository
 import ru.aliohin.recipesapp.R
 import model.Recipe
 import ru.aliohin.recipesapp.databinding.ItemRecipeBinding
@@ -46,17 +48,11 @@ class RecipesListAdapter(private var dataset: List<Recipe>) :
         holder.titleTextView.text = recipe.title
         holder.imageView.contentDescription =
             holder.itemView.context.getString(R.string.iV_Recipes_list_description, recipe.title)
-        val drawable =
-            try {
-                Drawable.createFromStream(
-                    holder.itemView.context.assets.open(recipe.imageUrl),
-                    null
-                )
-            } catch (e: Exception) {
-                Log.d("!!!", "Image not found ${recipe.imageUrl}")
-                null
-            }
-        holder.imageView.setImageDrawable(drawable)
+        Glide.with(holder.imageView.context)
+            .load("${RecipeRepository.INSTANSE.loadImageUrl}${recipe.imageUrl}")
+            .placeholder(R.drawable.img_placeholder)
+            .error(R.drawable.img_error)
+            .into(holder.imageView)
         holder.root.setOnClickListener { itemClickListener?.onItemClick(recipe.id) }
     }
 

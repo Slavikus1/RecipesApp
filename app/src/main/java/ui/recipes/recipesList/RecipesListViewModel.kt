@@ -13,7 +13,7 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
 
     data class RecipesListState(
         val listOfRecipes: List<Recipe>? = null,
-        val categoryImage: Drawable? = null,
+        val categoryImageUrl: String? = null,
         val categoryName: String? = null,
         var isShowError: Boolean = false,
     )
@@ -23,36 +23,26 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
         get() = _recipeState
 
     fun loadRecipesListState(categoryId: Int?, categoryName: String?, categoryImageUrl: String?) {
-        var drawable: Drawable? = null
+        var imageUrl: String? = null
+
         if (categoryImageUrl != null) {
-            drawable = loadImageFromAssets(categoryImageUrl)
+            imageUrl = categoryImageUrl
         }
         if (categoryId != null) {
             RecipeRepository.INSTANSE.getRecipesByCategoryId(categoryId){ recipes ->
                 if (!recipes.isNullOrEmpty()){
-                    _recipeState.postValue(RecipesListState(
+                    _recipeState.postValue(recipeState.value?.copy(
                         listOfRecipes = recipes,
-                        categoryImage = drawable,
+                        categoryImageUrl = "${RecipeRepository.INSTANSE.loadImageUrl}$imageUrl",
                         categoryName = categoryName,
                     ))
                 }
                 else {
-                    _recipeState.postValue(RecipesListState(isShowError = true))
+                    _recipeState.postValue(recipeState.value?.copy(isShowError = true))
                 }
 
             }
         }
         else Log.i("!!!", "Category id must not be null")
-    }
-
-    private fun loadImageFromAssets(categoryImageUrl: String): Drawable? {
-        return try {
-            application.assets.open(categoryImageUrl).use { stream ->
-                Drawable.createFromStream(stream, null)
-            }
-        } catch (e: Exception) {
-            Log.e("RecipeViewModel", "Error loading image for $categoryImageUrl")
-            null
-        }
     }
 }

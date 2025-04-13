@@ -9,7 +9,7 @@ import ru.aliohin.recipesapp.databinding.ItemIngredientBinding
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class IngredientsAdapter(var dataset: List<Ingredient>) :
+class IngredientsAdapter(private var dataset: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.IngredientHolder>() {
     private var quantity = 1
 
