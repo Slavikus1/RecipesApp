@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.FragmentRecipeBinding
@@ -64,7 +65,11 @@ class RecipeFragment : Fragment() {
         recipeViewModel.recipeState.observe(viewLifecycleOwner) {
             val state: RecipeViewModel.RecipeState = it
             val recipe = state.recipe
-            binding.ivRecipeImageHeader.setImageDrawable(it.recipeImage)
+            Glide.with(this)
+                .load(state.recipeImageUrl)
+                .placeholder(R.drawable.img_placeholder)
+                .error(R.drawable.img_error)
+                .into(binding.ivRecipeImageHeader)
             binding.tvLabelRecipe.text = recipe?.title
             binding.imageButtonFavourites.setImageResource(
                 if (state.isFavourite) R.drawable.ic_heart else R.drawable.ic_heart_empty

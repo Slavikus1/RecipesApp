@@ -1,13 +1,13 @@
 package ui.categories
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import data.RecipeRepository
 import model.Category
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.ItemCategoryBinding
@@ -46,25 +46,22 @@ class CategoryListAdapter(private var dataset: List<Category>) :
         val category: Category = dataset[position]
         viewHolder.titleTextView.text = category.title
         viewHolder.descriptionTextView.text = category.description
-        val drawable =
-            try {
-                Drawable.createFromStream(
-                    viewHolder.itemView.context.assets.open(category.imageUrl),
-                    null
-                )
-            } catch (e: Exception) {
-                Log.d("!!!", "Image not found ${category.imageUrl}")
-                null
-            }
-        viewHolder.imageView.setImageDrawable(drawable)
+        Glide.with(viewHolder.imageView.context)
+            .load("${RecipeRepository.INSTANSE.loadImageUrl}${category.imageUrl}")
+            .placeholder(R.drawable.img_placeholder)
+            .error(R.drawable.img_error)
+            .into(viewHolder.imageView)
         viewHolder.root.setOnClickListener { itemClickListener?.onItemClick(category.id) }
         viewHolder.imageView.contentDescription =
-            viewHolder.itemView.context.getString(R.string.iV_category_list_description, category.title)
+            viewHolder.itemView.context.getString(
+                R.string.iV_category_list_description,
+                category.title
+            )
     }
 
     override fun getItemCount() = dataset.size
 
-    fun updateDataSet(newSet: List<Category>){
+    fun updateDataSet(newSet: List<Category>) {
         dataset = newSet
         notifyDataSetChanged()
     }

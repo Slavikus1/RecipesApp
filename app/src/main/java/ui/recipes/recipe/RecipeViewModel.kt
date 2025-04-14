@@ -3,8 +3,6 @@ package ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +17,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val recipe: Recipe? = null,
         val isFavourite: Boolean = false,
         val numberOfPortions: Int = 1,
-        val recipeImage: Drawable? = null,
+        val recipeImageUrl: String? = null,
         var isShowError: Boolean = false,
     )
 
@@ -34,26 +32,14 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         RecipeRepository.INSTANSE.getRecipeById(recipeId){ recipe: Recipe? ->
             if (recipe != null){
                 val isFavourite = getFavourites().contains(recipe.id.toString())
-                val drawable = loadImageFromAssets(recipe.imageUrl)
-                _recipeState.postValue(_recipeState.value?.copy(
+                _recipeState.postValue(recipeState.value?.copy(
                     recipe = recipe,
                     isFavourite = isFavourite,
                     numberOfPortions = 1,
-                    recipeImage = drawable,
+                    recipeImageUrl = "${RecipeRepository.INSTANSE.loadImageUrl}${recipe.imageUrl}",
                 ))
             }
-            else _recipeState.postValue(RecipeState(isShowError = true))
-        }
-    }
-
-    private fun loadImageFromAssets(recipeImageUrl: String): Drawable? {
-        return try {
-            application.assets.open(recipeImageUrl).use { stream ->
-                Drawable.createFromStream(stream, null)
-            }
-        } catch (e: Exception) {
-            Log.e("RecipeViewModel", "Error loading image for $recipeImageUrl")
-            null
+            else _recipeState.postValue(recipeState.value?.copy(isShowError = true))
         }
     }
 

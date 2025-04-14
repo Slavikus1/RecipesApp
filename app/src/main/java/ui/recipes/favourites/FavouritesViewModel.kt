@@ -33,9 +33,9 @@ class FavouritesViewModel(private val application: Application) : AndroidViewMod
         Log.i("!!!", "favourites - $favouritesIds")
         RecipeRepository.INSTANSE.getRecipesByIds(favouritesIds) { recipes ->
             if (!recipes.isNullOrEmpty()) {
-                _favouritesState.postValue(FavouritesState(favouritesList = recipes))
+                _favouritesState.postValue(favouritesState.value?.copy(favouritesList = recipes))
             } else _favouritesState.postValue(
-                FavouritesState(
+                favouritesState.value?.copy(
                     favouritesList = emptyList(),
                     isShowError = true,
                 )
