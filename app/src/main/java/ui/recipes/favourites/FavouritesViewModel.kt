@@ -6,7 +6,9 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import data.RecipeRepository
+import kotlinx.coroutines.launch
 import model.Recipe
 import ui.recipes.recipe.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
 import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
@@ -29,17 +31,19 @@ class FavouritesViewModel(private val application: Application) : AndroidViewMod
         get() = _favouritesState
 
     fun loadFavouritesState() {
-        val favouritesIds = getFavourites(shredPreferences)
-        Log.i("!!!", "favourites - $favouritesIds")
-        RecipeRepository.INSTANSE.getRecipesByIds(favouritesIds) { recipes ->
-            if (!recipes.isNullOrEmpty()) {
-                _favouritesState.postValue(favouritesState.value?.copy(favouritesList = recipes))
-            } else _favouritesState.postValue(
-                favouritesState.value?.copy(
-                    favouritesList = emptyList(),
-                    isShowError = true,
+        viewModelScope.launch {
+            val favouritesIds = getFavourites(shredPreferences)
+            Log.i("!!!", "favourites - $favouritesIds")
+            RecipeRepository.INSTANCE.getRecipesByIds(favouritesIds) { recipes ->
+                if (!recipes.isNullOrEmpty()) {
+                    _favouritesState.postValue(favouritesState.value?.copy(favouritesList = recipes))
+                } else _favouritesState.postValue(
+                    favouritesState.value?.copy(
+                        favouritesList = emptyList(),
+                        isShowError = true,
+                    )
                 )
-            )
+            }
         }
     }
 

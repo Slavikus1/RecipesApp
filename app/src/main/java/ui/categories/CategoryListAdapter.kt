@@ -47,7 +47,7 @@ class CategoryListAdapter(private var dataset: List<Category>) :
         viewHolder.titleTextView.text = category.title
         viewHolder.descriptionTextView.text = category.description
         Glide.with(viewHolder.imageView.context)
-            .load("${RecipeRepository.INSTANSE.loadImageUrl}${category.imageUrl}")
+            .load("${RecipeRepository.INSTANCE.loadImageUrl}${category.imageUrl}")
             .placeholder(R.drawable.img_placeholder)
             .error(R.drawable.img_error)
             .into(viewHolder.imageView)

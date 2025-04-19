@@ -47,7 +47,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
                 categoriesAdapter.updateDataSet(it1)
                 if (it.isShowError) Toast.makeText(
                     requireContext(),
-                    "Ошибка при загрузке категорий",
+                    getString(R.string.toast_error_load_data),
                     Toast.LENGTH_SHORT
                 ).show()
             }
