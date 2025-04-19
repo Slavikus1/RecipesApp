@@ -20,18 +20,18 @@ class CategoriesListViewModel : ViewModel() {
 
     fun loadCategories() {
         viewModelScope.launch {
-            RecipeRepository.INSTANCE.getCategories { categories ->
-                if (!categories.isNullOrEmpty()) {
-                    _categoriesState.postValue(categoriesState.value?.copy(list = categories))
-                } else {
-                    _categoriesState.postValue(
-                        categoriesState.value?.copy(
-                            isShowError = true,
-                            list = emptyList()
-                        )
+            val categories = RecipeRepository.INSTANCE.getCategories()
+            if (!categories.isNullOrEmpty()) {
+                _categoriesState.postValue(categoriesState.value?.copy(list = categories))
+            } else {
+                _categoriesState.postValue(
+                    categoriesState.value?.copy(
+                        isShowError = true,
+                        list = emptyList()
                     )
-                }
+                )
             }
+
         }
     }
 }

@@ -23,8 +23,11 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         var isShowError: Boolean = false,
     )
 
-    private val sharedPref: SharedPreferences by lazy { application.getSharedPreferences(
-        SHARED_PREFERENCES, Context.MODE_PRIVATE) }
+    private val sharedPref: SharedPreferences by lazy {
+        application.getSharedPreferences(
+            SHARED_PREFERENCES, Context.MODE_PRIVATE
+        )
+    }
 
     private val _recipeState = MutableLiveData(RecipeState())
     val recipeState: LiveData<RecipeState>
@@ -32,18 +35,19 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            RecipeRepository.INSTANCE.getRecipeById(recipeId){ recipe: Recipe? ->
-                if (recipe != null){
-                    val isFavourite = getFavourites().contains(recipe.id.toString())
-                    _recipeState.postValue(recipeState.value?.copy(
+            val recipe = RecipeRepository.INSTANCE.getRecipeById(recipeId)
+            if (recipe != null) {
+                val isFavourite = getFavourites().contains(recipe.id.toString())
+                _recipeState.postValue(
+                    recipeState.value?.copy(
                         recipe = recipe,
                         isFavourite = isFavourite,
                         numberOfPortions = 1,
                         recipeImageUrl = "${RecipeRepository.INSTANCE.loadImageUrl}${recipe.imageUrl}",
-                    ))
-                }
-                else _recipeState.postValue(recipeState.value?.copy(isShowError = true))
-            }
+                    )
+                )
+            } else _recipeState.postValue(recipeState.value?.copy(isShowError = true))
+
         }
     }
 

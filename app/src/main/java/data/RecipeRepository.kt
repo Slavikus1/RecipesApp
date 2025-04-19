@@ -7,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import model.Category
 import model.Recipe
-import okhttp3.Dispatcher
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -31,55 +30,58 @@ class RecipeRepository {
         .build()
     private val service: RecipeApiService = retrofit.create(RecipeApiService::class.java)
 
-    suspend fun getCategories(callback: (List<Category>?) -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun getCategories(): List<Category>? {
+        return withContext(Dispatchers.IO) {
             try {
                 val response = service.getCategories().execute()
-                if (response.isSuccessful) callback(response.body())
-                else callback(null)
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    null
+                }
             } catch (e: Exception) {
-                Log.i("!!!", "${e.message}")
-                callback(null)
+                Log.i("Error fetching categories", e.message ?: "Unknown error")
+                null
             }
         }
     }
 
-    suspend fun getRecipesByCategoryId(categoryId: Int, callback: (List<Recipe>?) -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun getRecipesByCategoryId(categoryId: Int): List<Recipe>? {
+        return withContext(Dispatchers.IO) {
             try {
                 val response = service.getRecipesWithCategoryId(categoryId).execute()
-                if (response.isSuccessful) callback(response.body())
-                else callback(null)
+                if (response.isSuccessful) {
+                    response.body()
+                } else null
             } catch (e: Exception) {
                 Log.i("!!!", "${e.message}")
-                callback(null)
+                null
             }
         }
     }
 
-    suspend fun getRecipeById(recipeId: Int, callback: (Recipe?) -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun getRecipeById(recipeId: Int): Recipe? {
+        return withContext(Dispatchers.IO) {
             try {
                 val response = service.getRecipeWithId(recipeId).execute()
-                if (response.isSuccessful) callback(response.body())
-                else callback(null)
+                if (response.isSuccessful) response.body()
+                else null
             } catch (e: Exception) {
                 Log.i("!!!", "${e.message}")
-                callback(null)
+                null
             }
         }
     }
 
-    suspend fun getRecipesByIds(ids: String, callback: (List<Recipe>?) -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun getRecipesByIds(ids: String): List<Recipe>? {
+        return withContext(Dispatchers.IO) {
             try {
-                Log.i("!!!!", ids)
                 val response = service.getRecipesByIds(ids).execute()
-                if (response.isSuccessful) callback(response.body())
-                else callback(null)
+                if (response.isSuccessful) response.body()
+                else null
             } catch (e: Exception) {
                 Log.i("!!!", "${e.message}")
-                callback(null)
+                null
             }
         }
     }

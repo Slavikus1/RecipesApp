@@ -30,19 +30,17 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
                 imageUrl = categoryImageUrl
             }
             if (categoryId != null) {
-                RecipeRepository.INSTANCE.getRecipesByCategoryId(categoryId) { recipes ->
-                    if (!recipes.isNullOrEmpty()) {
-                        _recipeState.postValue(
-                            recipeState.value?.copy(
-                                listOfRecipes = recipes,
-                                categoryImageUrl = "${RecipeRepository.INSTANCE.loadImageUrl}$imageUrl",
-                                categoryName = categoryName,
-                            )
+                val recipes = RecipeRepository.INSTANCE.getRecipesByCategoryId(categoryId)
+                if (!recipes.isNullOrEmpty()) {
+                    _recipeState.postValue(
+                        recipeState.value?.copy(
+                            listOfRecipes = recipes,
+                            categoryImageUrl = "${RecipeRepository.INSTANCE.loadImageUrl}$imageUrl",
+                            categoryName = categoryName,
                         )
-                    } else {
-                        _recipeState.postValue(recipeState.value?.copy(isShowError = true))
-                    }
-
+                    )
+                } else {
+                    _recipeState.postValue(recipeState.value?.copy(isShowError = true))
                 }
             } else Log.i("!!!", "Category id must not be null")
         }

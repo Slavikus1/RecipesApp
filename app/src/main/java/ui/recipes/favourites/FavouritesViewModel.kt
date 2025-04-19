@@ -34,16 +34,16 @@ class FavouritesViewModel(private val application: Application) : AndroidViewMod
         viewModelScope.launch {
             val favouritesIds = getFavourites(shredPreferences)
             Log.i("!!!", "favourites - $favouritesIds")
-            RecipeRepository.INSTANCE.getRecipesByIds(favouritesIds) { recipes ->
-                if (!recipes.isNullOrEmpty()) {
-                    _favouritesState.postValue(favouritesState.value?.copy(favouritesList = recipes))
-                } else _favouritesState.postValue(
-                    favouritesState.value?.copy(
-                        favouritesList = emptyList(),
-                        isShowError = true,
-                    )
+            val recipes = RecipeRepository.INSTANCE.getRecipesByIds(favouritesIds)
+            if (!recipes.isNullOrEmpty()) {
+                _favouritesState.postValue(favouritesState.value?.copy(favouritesList = recipes))
+            } else _favouritesState.postValue(
+                favouritesState.value?.copy(
+                    favouritesList = emptyList(),
+                    isShowError = true,
                 )
-            }
+            )
+
         }
     }
 
