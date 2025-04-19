@@ -1,11 +1,12 @@
 package ui.recipes.recipesList
 
 import android.app.Application
-import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import data.RecipeRepository
+import kotlinx.coroutines.launch
 
 import model.Recipe
 
@@ -23,26 +24,27 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
         get() = _recipeState
 
     fun loadRecipesListState(categoryId: Int?, categoryName: String?, categoryImageUrl: String?) {
-        var imageUrl: String? = null
-
-        if (categoryImageUrl != null) {
-            imageUrl = categoryImageUrl
-        }
-        if (categoryId != null) {
-            RecipeRepository.INSTANSE.getRecipesByCategoryId(categoryId){ recipes ->
-                if (!recipes.isNullOrEmpty()){
-                    _recipeState.postValue(recipeState.value?.copy(
-                        listOfRecipes = recipes,
-                        categoryImageUrl = "${RecipeRepository.INSTANSE.loadImageUrl}$imageUrl",
-                        categoryName = categoryName,
-                    ))
-                }
-                else {
-                    _recipeState.postValue(recipeState.value?.copy(isShowError = true))
-                }
-
+        viewModelScope.launch {
+            var imageUrl: String? = null
+            if (categoryImageUrl != null) {
+                imageUrl = categoryImageUrl
             }
+            if (categoryId != null) {
+                RecipeRepository.INSTANCE.getRecipesByCategoryId(categoryId) { recipes ->
+                    if (!recipes.isNullOrEmpty()) {
+                        _recipeState.postValue(
+                            recipeState.value?.copy(
+                                listOfRecipes = recipes,
+                                categoryImageUrl = "${RecipeRepository.INSTANCE.loadImageUrl}$imageUrl",
+                                categoryName = categoryName,
+                            )
+                        )
+                    } else {
+                        _recipeState.postValue(recipeState.value?.copy(isShowError = true))
+                    }
+
+                }
+            } else Log.i("!!!", "Category id must not be null")
         }
-        else Log.i("!!!", "Category id must not be null")
     }
 }

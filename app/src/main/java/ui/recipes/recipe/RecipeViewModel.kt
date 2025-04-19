@@ -6,7 +6,9 @@ import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import data.RecipeRepository
+import kotlinx.coroutines.launch
 import model.Recipe
 import ui.recipes.recipe.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
 import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
@@ -29,17 +31,19 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         get() = _recipeState
 
     fun loadRecipe(recipeId: Int) {
-        RecipeRepository.INSTANSE.getRecipeById(recipeId){ recipe: Recipe? ->
-            if (recipe != null){
-                val isFavourite = getFavourites().contains(recipe.id.toString())
-                _recipeState.postValue(recipeState.value?.copy(
-                    recipe = recipe,
-                    isFavourite = isFavourite,
-                    numberOfPortions = 1,
-                    recipeImageUrl = "${RecipeRepository.INSTANSE.loadImageUrl}${recipe.imageUrl}",
-                ))
+        viewModelScope.launch {
+            RecipeRepository.INSTANCE.getRecipeById(recipeId){ recipe: Recipe? ->
+                if (recipe != null){
+                    val isFavourite = getFavourites().contains(recipe.id.toString())
+                    _recipeState.postValue(recipeState.value?.copy(
+                        recipe = recipe,
+                        isFavourite = isFavourite,
+                        numberOfPortions = 1,
+                        recipeImageUrl = "${RecipeRepository.INSTANCE.loadImageUrl}${recipe.imageUrl}",
+                    ))
+                }
+                else _recipeState.postValue(recipeState.value?.copy(isShowError = true))
             }
-            else _recipeState.postValue(recipeState.value?.copy(isShowError = true))
         }
     }
 

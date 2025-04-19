@@ -96,7 +96,7 @@ class RecipeFragment : Fragment() {
                 binding.tvNumberOfPortions.text = state.numberOfPortions.toString()
                 if (state.isShowError) Toast.makeText(
                     requireContext(),
-                    "Ощибка загрузки рецепта",
+                    getString(R.string.toast_error_load_data),
                     Toast.LENGTH_SHORT
                 ).show()
             }
