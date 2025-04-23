@@ -34,8 +34,7 @@ class RecipeRepository(private val dispatcher: CoroutineDispatcher = Dispatchers
     suspend fun getCategories(): List<Category>? {
         return withContext(dispatcher) {
             try {
-                val response = service.getCategories()
-                response
+                service.getCategories()
             } catch (e: Exception) {
                 Log.i("Error fetching categories", e.message ?: "Unknown error")
                 null
@@ -46,8 +45,7 @@ class RecipeRepository(private val dispatcher: CoroutineDispatcher = Dispatchers
     suspend fun getRecipesByCategoryId(categoryId: Int): List<Recipe>? {
         return withContext(dispatcher) {
             try {
-                val response = service.getRecipesWithCategoryId(categoryId)
-                response
+                service.getRecipesWithCategoryId(categoryId)
             } catch (e: Exception) {
                 Log.i("!!!", "${e.message}")
                 null
@@ -58,8 +56,7 @@ class RecipeRepository(private val dispatcher: CoroutineDispatcher = Dispatchers
     suspend fun getRecipeById(recipeId: Int): Recipe? {
         return withContext(dispatcher) {
             try {
-                val response = service.getRecipeWithId(recipeId)
-                response
+                service.getRecipeWithId(recipeId)
             } catch (e: Exception) {
                 Log.i("!!!", "${e.message}")
                 null
@@ -70,8 +67,7 @@ class RecipeRepository(private val dispatcher: CoroutineDispatcher = Dispatchers
     suspend fun getRecipesByIds(ids: String): List<Recipe>? {
         return withContext(dispatcher) {
             try {
-                val response = service.getRecipesByIds(ids)
-                response
+                service.getRecipesByIds(ids)
             } catch (e: Exception) {
                 Log.i("!!!", "${e.message}")
                 null
