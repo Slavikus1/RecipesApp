@@ -44,20 +44,27 @@ class IngredientsAdapter(private var dataset: List<Ingredient>) :
         notifyDataSetChanged()
     }
 
-    private fun calculateIngredients(ingredients: String): String {
-        val ingredientQuantity = try {
-            BigDecimal(ingredients)
-        } catch (e: NumberFormatException) {
-            Log.e("IngredientsAdapter","${e.message}")
-            return "0"
-        }
-        val totalQuantity = ingredientQuantity * BigDecimal(quantity)
-        val displayQuantity = totalQuantity
-            .setScale(1, RoundingMode.HALF_UP)
-            .stripTrailingZeros()
-            .toPlainString()
+    private fun calculateIngredients(ingredientsQuantity: String): String {
+        if (!isNumeric(ingredientsQuantity)) return ingredientsQuantity
+        else{
+            val ingredientQuantity = try {
+                BigDecimal(ingredientsQuantity)
+            } catch (e: NumberFormatException) {
+                Log.e("IngredientsAdapter","${e.message}")
+                return "0"
+            }
+            val totalQuantity = ingredientQuantity * BigDecimal(quantity)
+            val displayQuantity = totalQuantity
+                .setScale(1, RoundingMode.HALF_UP)
+                .stripTrailingZeros()
+                .toPlainString()
 
-        return displayQuantity
+            return displayQuantity
+        }
+    }
+
+    private fun isNumeric(ingredients: String): Boolean{
+        return ingredients.toDoubleOrNull() != null
     }
 
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.FragmentFavoritesBinding
 import ui.recipes.recipesList.RecipesListAdapter
 
@@ -53,11 +54,11 @@ class FavoritesFragment : Fragment() {
                 binding.tvFavorites.visibility = View.GONE
                 binding.rvFavorites.visibility = View.VISIBLE
             }
-            if (it.isShowError) Toast.makeText(
-                requireContext(),
-                "Ошибка загрузки избранного",
-                Toast.LENGTH_SHORT
-            ).show()
+            if (it.isShowError) {
+                Toast.makeText(requireContext(),
+                    getString(R.string.toast_error_loading_data), Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 

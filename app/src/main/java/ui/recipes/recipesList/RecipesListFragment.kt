@@ -63,7 +63,7 @@ class RecipesListFragment : Fragment() {
                 .into(binding.imageHeaderRecipe)
             if (it.isShowError) Toast.makeText(
                 requireContext(),
-                "Ошибка загрузки рецептов",
+                getString(R.string.toast_error_load_data),
                 Toast.LENGTH_SHORT
             ).show()
         }

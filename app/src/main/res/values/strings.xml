@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">RecipesApp</string>
+    <string name="app_name">RecipesApp</string>
     <string name="button_favourites">Favourites</string>
     <string name="button_category">Category</string>
     <string name="text_burgers">Burgers</string>
@@ -13,4 +13,6 @@
     <string name="add_to_favourites">Add to favourites button %1$s</string>
     <string name="remove_from_favourites">Remove from favourites button %1$s</string>
     <string name="text_favorites">You add no recipes in favourites</string>
+    <string name="toast_error_load_data">Error loading data</string>
+    <string name="toast_error_loading_data">Error loading data</string>
 </resources>

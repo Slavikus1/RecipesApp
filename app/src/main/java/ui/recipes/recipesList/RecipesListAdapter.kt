@@ -1,8 +1,6 @@
 package ui.recipes.recipesList
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -49,7 +47,7 @@ class RecipesListAdapter(private var dataset: List<Recipe>) :
         holder.imageView.contentDescription =
             holder.itemView.context.getString(R.string.iV_Recipes_list_description, recipe.title)
         Glide.with(holder.imageView.context)
-            .load("${RecipeRepository.INSTANSE.loadImageUrl}${recipe.imageUrl}")
+            .load("${RecipeRepository.INSTANCE.loadImageUrl}${recipe.imageUrl}")
             .placeholder(R.drawable.img_placeholder)
             .error(R.drawable.img_error)
             .into(holder.imageView)
