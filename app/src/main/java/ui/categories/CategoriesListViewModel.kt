@@ -1,16 +1,15 @@
 package ui.categories
 
 import android.app.Application
-import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import data.RecipeRepository
 import kotlinx.coroutines.launch
 import model.Category
 
-class CategoriesListViewModel(private val application: Application) : ViewModel() {
+class CategoriesListViewModel(private val application: Application) : AndroidViewModel(application) {
     data class CategoriesListState(
         var list: List<Category>? = null,
         var isShowError: Boolean = false,

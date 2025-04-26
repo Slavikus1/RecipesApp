@@ -47,7 +47,7 @@ class RecipesListAdapter(private var dataset: List<Recipe>) :
         holder.imageView.contentDescription =
             holder.itemView.context.getString(R.string.iV_Recipes_list_description, recipe.title)
         Glide.with(holder.imageView.context)
-            .load("${RecipeRepository.INSTANCE.loadImageUrl}${recipe.imageUrl}")
+            .load("${RecipeRepository.getInstance(holder.imageView.context).loadImageUrl}${recipe.imageUrl}")
             .placeholder(R.drawable.img_placeholder)
             .error(R.drawable.img_error)
             .into(holder.imageView)
