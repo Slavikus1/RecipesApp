@@ -35,7 +35,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            val recipe = RecipeRepository.INSTANCE.getRecipeById(recipeId)
+            val recipe = RecipeRepository.getInstance(application).getRecipeById(recipeId)
             if (recipe != null) {
                 val isFavourite = getFavourites().contains(recipe.id.toString())
                 _recipeState.postValue(
@@ -43,7 +43,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                         recipe = recipe,
                         isFavourite = isFavourite,
                         numberOfPortions = 1,
-                        recipeImageUrl = "${RecipeRepository.INSTANCE.loadImageUrl}${recipe.imageUrl}",
+                        recipeImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}${recipe.imageUrl}",
                     )
                 )
             } else _recipeState.postValue(recipeState.value?.copy(isShowError = true))

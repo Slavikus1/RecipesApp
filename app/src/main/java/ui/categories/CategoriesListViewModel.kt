@@ -1,5 +1,7 @@
 package ui.categories
 
+import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +10,7 @@ import data.RecipeRepository
 import kotlinx.coroutines.launch
 import model.Category
 
-class CategoriesListViewModel : ViewModel() {
+class CategoriesListViewModel(private val application: Application) : ViewModel() {
     data class CategoriesListState(
         var list: List<Category>? = null,
         var isShowError: Boolean = false,
@@ -20,8 +22,13 @@ class CategoriesListViewModel : ViewModel() {
 
     fun loadCategories() {
         viewModelScope.launch {
-            val categories = RecipeRepository.INSTANCE.getCategories()
+            var categories: List<Category>? =
+                RecipeRepository.getInstance(application).getCategoriesFromCache()
+            if (categories != null && categories.isEmpty()) {
+                categories = RecipeRepository.getInstance(application).getCategories()
+            }
             if (!categories.isNullOrEmpty()) {
+                RecipeRepository.getInstance(application).insertCategoriesInDataBase(categories)
                 _categoriesState.postValue(categoriesState.value?.copy(list = categories))
             } else {
                 _categoriesState.postValue(
