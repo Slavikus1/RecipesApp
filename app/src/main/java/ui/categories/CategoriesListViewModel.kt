@@ -9,7 +9,8 @@ import data.RecipeRepository
 import kotlinx.coroutines.launch
 import model.Category
 
-class CategoriesListViewModel(private val application: Application) : AndroidViewModel(application) {
+class CategoriesListViewModel(private val application: Application) :
+    AndroidViewModel(application) {
     data class CategoriesListState(
         var list: List<Category>? = null,
         var isShowError: Boolean = false,
@@ -21,21 +22,27 @@ class CategoriesListViewModel(private val application: Application) : AndroidVie
 
     fun loadCategories() {
         viewModelScope.launch {
-            var categories: List<Category>? =
+            val cachedCategories =
                 RecipeRepository.getInstance(application).getCategoriesFromCache()
-            if (categories != null && categories.isEmpty()) {
-                categories = RecipeRepository.getInstance(application).getCategories()
-            }
-            if (!categories.isNullOrEmpty()) {
-                RecipeRepository.getInstance(application).insertCategoriesInDataBase(categories)
-                _categoriesState.postValue(categoriesState.value?.copy(list = categories))
+
+            if (cachedCategories.isNotEmpty()) {
+                _categoriesState.postValue(categoriesState.value?.copy(list = cachedCategories))
             } else {
+                _categoriesState.postValue(categoriesState.value?.copy(isShowError = true))
+            }
+
+            val serverCategories = RecipeRepository.getInstance(application).getCategories()
+            if (!serverCategories.isNullOrEmpty()) {
                 _categoriesState.postValue(
                     categoriesState.value?.copy(
-                        isShowError = true,
-                        list = emptyList()
+                        list = serverCategories,
+                        isShowError = false
                     )
                 )
+                RecipeRepository.getInstance(application)
+                    .insertCategoriesInDataBase(serverCategories)
+            } else {
+                _categoriesState.postValue(categoriesState.value?.copy(isShowError = true))
             }
 
         }

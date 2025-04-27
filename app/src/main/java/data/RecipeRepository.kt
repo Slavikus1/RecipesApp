@@ -42,11 +42,11 @@ class RecipeRepository(
         Room.databaseBuilder(context, AppDatabase::class.java, "database-categories").build()
     private val categoriesDao = database.categoriesDao()
 
-    fun insertCategoriesInDataBase(categories: List<Category>){
+    suspend fun insertCategoriesInDataBase(categories: List<Category>){
         categoriesDao.insertCategories(categories)
     }
 
-    fun getCategoriesFromCache(): List<Category> {
+    suspend fun getCategoriesFromCache(): List<Category> {
         return categoriesDao.getAll()
     }
 
