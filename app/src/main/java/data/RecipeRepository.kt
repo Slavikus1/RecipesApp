@@ -1,6 +1,9 @@
 package data
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -12,12 +15,16 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import kotlin.concurrent.Volatile
 
 const val CONTENT_TYPE = "application/Json"
 const val BASE_URL = "https://recipes.androidsprint.ru/api/"
 const val BASE_IMAGE_URL = "https://recipes.androidsprint.ru/api/images/"
 
-class RecipeRepository(private val dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+class RecipeRepository(
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    context: Context,
+) {
     val loadImageUrl = BASE_IMAGE_URL
     private val interceptor =
         HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
@@ -30,6 +37,18 @@ class RecipeRepository(private val dispatcher: CoroutineDispatcher = Dispatchers
         .addConverterFactory(Json.asConverterFactory(CONTENT_TYPE.toMediaType()))
         .build()
     private val service: RecipeApiService = retrofit.create(RecipeApiService::class.java)
+
+    private val database: AppDatabase =
+        Room.databaseBuilder(context, AppDatabase::class.java, "database-categories").build()
+    private val categoriesDao = database.categoriesDao()
+
+    suspend fun insertCategoriesInDataBase(categories: List<Category>){
+        categoriesDao.insertCategories(categories)
+    }
+
+    suspend fun getCategoriesFromCache(): List<Category> {
+        return categoriesDao.getAll()
+    }
 
     suspend fun getCategories(): List<Category>? {
         return withContext(dispatcher) {
@@ -76,7 +95,14 @@ class RecipeRepository(private val dispatcher: CoroutineDispatcher = Dispatchers
     }
 
     companion object {
-        val INSTANCE: RecipeRepository by lazy { RecipeRepository() }
+        @Volatile
+        private var INSTANCE: RecipeRepository? = null
+
+        fun getInstance(context: Context): RecipeRepository {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: RecipeRepository(context = context).also { INSTANCE = it }
+            }
+        }
     }
 }
 
