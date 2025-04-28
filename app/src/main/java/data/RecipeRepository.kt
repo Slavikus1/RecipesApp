@@ -1,7 +1,6 @@
 package data
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -23,7 +22,7 @@ const val BASE_IMAGE_URL = "https://recipes.androidsprint.ru/api/images/"
 
 class RecipeRepository(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    context: Context,
+    context: Application,
 ) {
     val loadImageUrl = BASE_IMAGE_URL
     private val interceptor =
@@ -39,10 +38,35 @@ class RecipeRepository(
     private val service: RecipeApiService = retrofit.create(RecipeApiService::class.java)
 
     private val database: AppDatabase =
-        Room.databaseBuilder(context, AppDatabase::class.java, "database-categories").build()
+        Room.databaseBuilder(context, AppDatabase::class.java, "database-categories")
+            .fallbackToDestructiveMigration(false)
+            .build()
+
     private val categoriesDao = database.categoriesDao()
 
-    suspend fun insertCategoriesInDataBase(categories: List<Category>){
+    private val recipeDao = database.recipesDao()
+
+    suspend fun getRecipesFromCacheByCategoryId(categoryId: Int): List<Recipe> {
+        return recipeDao.getRecipesFromCacheByCategoryId(categoryId)
+    }
+
+    suspend fun getRecipeFromCacheById(recipeId: Int): Recipe {
+        return recipeDao.getRecipeFromCacheById(recipeId)
+    }
+
+    suspend fun getAllRecipesFromCache(): List<Recipe> {
+        return recipeDao.getAllRecipesFromCache()
+    }
+
+    suspend fun insertRecipe(recipe: Recipe) {
+        recipeDao.insertRecipe(recipe)
+    }
+
+    suspend fun insertRecipesList(recipesList: List<Recipe>) {
+        recipeDao.insertRecipesList(recipesList)
+    }
+
+    suspend fun insertCategoriesInDataBase(categories: List<Category>) {
         categoriesDao.insertCategories(categories)
     }
 
@@ -98,7 +122,7 @@ class RecipeRepository(
         @Volatile
         private var INSTANCE: RecipeRepository? = null
 
-        fun getInstance(context: Context): RecipeRepository {
+        fun getInstance(context: Application): RecipeRepository {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: RecipeRepository(context = context).also { INSTANCE = it }
             }

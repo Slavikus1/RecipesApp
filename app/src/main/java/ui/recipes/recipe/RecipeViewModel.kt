@@ -3,6 +3,7 @@ package ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,15 +36,32 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            val recipe = RecipeRepository.getInstance(application).getRecipeById(recipeId)
-            if (recipe != null) {
-                val isFavourite = getFavourites().contains(recipe.id.toString())
+            val cachedRecipe =
+                RecipeRepository.getInstance(application).getRecipeFromCacheById(recipeId)
+            var isFavourite = getFavourites().contains(cachedRecipe.id.toString())
+            try {
                 _recipeState.postValue(
                     recipeState.value?.copy(
-                        recipe = recipe,
+                        recipe = cachedRecipe,
                         isFavourite = isFavourite,
                         numberOfPortions = 1,
-                        recipeImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}${recipe.imageUrl}",
+                        recipeImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}${cachedRecipe.imageUrl}"
+                    )
+                )
+            } catch (e: Exception) {
+                Log.i("Recipe VM exception", "${e.message}")
+                _recipeState.postValue(recipeState.value?.copy(isShowError = true))
+            }
+            val loadedRecipe = RecipeRepository.getInstance(application).getRecipeById(recipeId)
+            if (loadedRecipe != null) {
+                RecipeRepository.getInstance(application).insertRecipe(loadedRecipe)
+                isFavourite = getFavourites().contains(loadedRecipe.id.toString())
+                _recipeState.postValue(
+                    recipeState.value?.copy(
+                        recipe = loadedRecipe,
+                        isFavourite = isFavourite,
+                        numberOfPortions = 1,
+                        recipeImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}${loadedRecipe.imageUrl}",
                     )
                 )
             } else _recipeState.postValue(recipeState.value?.copy(isShowError = true))
