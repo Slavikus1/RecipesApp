@@ -8,6 +8,10 @@ import model.Recipe
 
 @Dao
 interface RecipeDao {
+
+    @Query("Update recipes SET isFavourite =:isFavourite WHERE id =:recipeId")
+    suspend fun updateFavouriteStatus(recipeId: Int, isFavourite: Boolean)
+
     @Query("SELECT * FROM recipes WHERE category_id =:categoryId")
     suspend fun getRecipesFromCacheByCategoryId(categoryId: Int): List<Recipe>
 

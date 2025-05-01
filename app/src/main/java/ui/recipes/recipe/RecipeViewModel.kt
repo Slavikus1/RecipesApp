@@ -38,7 +38,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         viewModelScope.launch {
             val cachedRecipe =
                 RecipeRepository.getInstance(application).getRecipeFromCacheById(recipeId)
-            var isFavourite = getFavourites().contains(cachedRecipe.id.toString())
+            var isFavourite = cachedRecipe.isFavourite
             try {
                 _recipeState.postValue(
                     recipeState.value?.copy(
@@ -81,8 +81,13 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     internal fun onFavoritesClicked(recipeId: String) {
         _recipeState.value.let { state ->
             val favouritesSet = getFavourites()
-            if (favouritesSet.contains(recipeId)) favouritesSet.remove(recipeId)
-            else favouritesSet.add(recipeId)
+            if (favouritesSet.contains(recipeId)) {
+                favouritesSet.remove(recipeId)
+                updateCacheFavourites(recipeId.toInt(), false)
+            } else {
+                favouritesSet.add(recipeId)
+                updateCacheFavourites(recipeId.toInt(), true)
+            }
             saveFavourites(favouritesSet)
             _recipeState.value = state?.copy(isFavourite = favouritesSet.contains(recipeId))
         }
@@ -90,5 +95,11 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     fun updatePortionsCount(currentCount: Int) {
         _recipeState.value = _recipeState.value?.copy(numberOfPortions = currentCount)
+    }
+
+    private fun updateCacheFavourites(recipeId: Int, isFavourite: Boolean) {
+        viewModelScope.launch {
+            RecipeRepository.getInstance(application).updateFavouritesStatus(recipeId, isFavourite)
+        }
     }
 }
