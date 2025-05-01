@@ -1,6 +1,7 @@
 package ui.categories
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -47,7 +48,7 @@ class CategoryListAdapter(private var dataset: List<Category>) :
         viewHolder.titleTextView.text = category.title
         viewHolder.descriptionTextView.text = category.description
         Glide.with(viewHolder.imageView.context)
-            .load("${RecipeRepository.getInstance(viewHolder.imageView.context).loadImageUrl}${category.imageUrl}")
+            .load("${RecipeRepository.getInstance(Application()).loadImageUrl}${category.imageUrl}")
             .placeholder(R.drawable.img_placeholder)
             .error(R.drawable.img_error)
             .into(viewHolder.imageView)

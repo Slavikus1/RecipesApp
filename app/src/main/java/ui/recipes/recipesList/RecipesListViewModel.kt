@@ -30,8 +30,21 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
                 imageUrl = categoryImageUrl
             }
             if (categoryId != null) {
-                val recipes = RecipeRepository.getInstance(application).getRecipesByCategoryId(categoryId)
+                val cachedRecipes = RecipeRepository.getInstance(application)
+                    .getRecipesFromCacheByCategoryId(categoryId)
+                if (cachedRecipes.isNotEmpty()) {
+                    _recipeState.postValue(
+                        recipeState.value?.copy(
+                            listOfRecipes = cachedRecipes,
+                            categoryImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}$imageUrl",
+                            categoryName = categoryName,
+                        )
+                    )
+                }
+                val recipes =
+                    RecipeRepository.getInstance(application).getRecipesByCategoryId(categoryId)
                 if (!recipes.isNullOrEmpty()) {
+                    RecipeRepository.getInstance(application).insertRecipesList(recipes)
                     _recipeState.postValue(
                         recipeState.value?.copy(
                             listOfRecipes = recipes,
