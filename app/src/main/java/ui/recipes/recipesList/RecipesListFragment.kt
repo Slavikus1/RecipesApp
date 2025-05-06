@@ -7,9 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import data.RecipeRepository
+import kotlinx.coroutines.launch
+import model.Recipe
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.FragmentRecipesListBinding
 
@@ -70,10 +74,28 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        findNavController().navigate(
-            RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
-                recipeId
-            )
-        )
+        viewLifecycleOwner.lifecycleScope.launch {
+            val cachedRecipe = RecipeRepository.getInstance(requireActivity().application)
+                .getRecipeFromCacheById(recipeId)
+            if (cachedRecipe == null) {
+                val loadedRecipe = RecipeRepository.getInstance(requireActivity().application)
+                    .getRecipeById(recipeId)
+                findNavController().navigate(
+                    RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
+                        loadedRecipe!!
+                    )
+                )
+                RecipeRepository.getInstance(requireActivity().application)
+                    .insertRecipe(loadedRecipe)
+            } else {
+                findNavController().navigate(
+                    RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
+                        cachedRecipe
+                    )
+                )
+            }
+
+        }
+
     }
 }

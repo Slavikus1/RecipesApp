@@ -46,15 +46,19 @@ class RecipeRepository(
 
     private val recipeDao = database.recipesDao()
 
-    suspend fun updateFavouritesStatus(recipeId: Int, isFavourite: Boolean) {
-        recipeDao.updateFavouriteStatus(recipeId, isFavourite)
+    suspend fun getFavouritesRecipes(): List<Recipe> {
+        return recipeDao.getFavouritesRecipes()
+    }
+
+    suspend fun updateFavouritesStatus(recipe: Recipe) {
+        recipeDao.updateFavouriteStatus(recipe)
     }
 
     suspend fun getRecipesFromCacheByCategoryId(categoryId: Int): List<Recipe> {
         return recipeDao.getRecipesFromCacheByCategoryId(categoryId)
     }
 
-    suspend fun getRecipeFromCacheById(recipeId: Int): Recipe {
+    suspend fun getRecipeFromCacheById(recipeId: Int): Recipe? {
         return recipeDao.getRecipeFromCacheById(recipeId)
     }
 

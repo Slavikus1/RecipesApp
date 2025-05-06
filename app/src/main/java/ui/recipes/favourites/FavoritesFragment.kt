@@ -67,7 +67,7 @@ class FavoritesFragment : Fragment() {
             favouritesViewModel.favouritesState.value?.favouritesList?.find { it.id == recipeId }
         if (recipe != null) {
             val action =
-                FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(recipe.id)
+                FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(recipe)
             findNavController().navigate(action)
         } else Log.e("RecipesListFragment", "Recipe not found for ID: $recipeId")
     }

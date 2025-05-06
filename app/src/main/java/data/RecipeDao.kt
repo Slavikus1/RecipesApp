@@ -9,14 +9,17 @@ import model.Recipe
 @Dao
 interface RecipeDao {
 
-    @Query("Update recipes SET isFavourite =:isFavourite WHERE id =:recipeId")
-    suspend fun updateFavouriteStatus(recipeId: Int, isFavourite: Boolean)
+    @Query("Select * from recipes WHERE isFavourite = 1")
+    suspend fun getFavouritesRecipes(): List<Recipe>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateFavouriteStatus(recipe: Recipe)
 
     @Query("SELECT * FROM recipes WHERE category_id =:categoryId")
     suspend fun getRecipesFromCacheByCategoryId(categoryId: Int): List<Recipe>
 
     @Query("SELECT * FROM recipes WHERE id =:recipeId")
-    suspend fun getRecipeFromCacheById(recipeId: Int): Recipe
+    suspend fun getRecipeFromCacheById(recipeId: Int): Recipe?
 
     @Query("SELECT * FROM recipes")
     suspend fun getAllRecipesFromCache(): List<Recipe>

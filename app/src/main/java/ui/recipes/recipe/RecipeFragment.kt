@@ -56,8 +56,8 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recipeId = recipeArgs.recipeId
-        recipeViewModel.loadRecipe(recipeId)
+        val recipe = recipeArgs.recipe
+        recipeViewModel.loadRecipe(recipe)
         initUI()
     }
 
@@ -79,7 +79,9 @@ class RecipeFragment : Fragment() {
                 state.recipe?.title
             )
             binding.imageButtonFavourites.setOnClickListener {
-                recipeViewModel.onFavoritesClicked(recipe?.id.toString())
+                if (recipe != null) {
+                    recipeViewModel.onFavoritesClicked(recipe)
+                }
             }
             binding.rvIngredients.adapter = recipeViewModel.recipeState.value?.recipe?.let {
                 IngredientsAdapter(emptyList())
