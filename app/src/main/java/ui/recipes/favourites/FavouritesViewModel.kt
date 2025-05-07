@@ -19,24 +19,16 @@ class FavouritesViewModel(private val application: Application) : AndroidViewMod
         var isShowError: Boolean = false
     )
 
-    private val shredPreferences by lazy {
-        application.getSharedPreferences(
-            SHARED_PREFERENCES,
-            Context.MODE_PRIVATE
-        )
-    }
-
     private val _favouritesState = MutableLiveData(FavouritesState())
     val favouritesState
         get() = _favouritesState
 
     fun loadFavouritesState() {
         viewModelScope.launch {
-            val favouritesIds = getFavourites(shredPreferences)
-            Log.i("!!!", "favourites - $favouritesIds")
-            val recipes = RecipeRepository.getInstance(application).getRecipesByIds(favouritesIds)
-            if (!recipes.isNullOrEmpty()) {
-                _favouritesState.postValue(favouritesState.value?.copy(favouritesList = recipes))
+            val favourites = RecipeRepository.getInstance(application).getFavouritesRecipes()
+            Log.i("!!!", "favourites - $favourites")
+            if (favourites.isNotEmpty()) {
+                _favouritesState.postValue(favouritesState.value?.copy(favouritesList = favourites))
             } else _favouritesState.postValue(
                 favouritesState.value?.copy(
                     favouritesList = emptyList(),
@@ -45,10 +37,5 @@ class FavouritesViewModel(private val application: Application) : AndroidViewMod
             )
 
         }
-    }
-
-    private fun getFavourites(sharedPref: SharedPreferences): String {
-        val newSet = sharedPref.getStringSet(KEY_FAVOURITES_RECIPE, setOf()) ?: setOf()
-        return newSet.joinToString(",")
     }
 }

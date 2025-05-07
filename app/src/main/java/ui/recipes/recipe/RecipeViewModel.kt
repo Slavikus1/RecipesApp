@@ -24,71 +24,55 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         var isShowError: Boolean = false,
     )
 
-    private val sharedPref: SharedPreferences by lazy {
-        application.getSharedPreferences(
-            SHARED_PREFERENCES, Context.MODE_PRIVATE
-        )
-    }
-
     private val _recipeState = MutableLiveData(RecipeState())
     val recipeState: LiveData<RecipeState>
         get() = _recipeState
 
-    fun loadRecipe(recipeId: Int) {
+    fun loadRecipe(recipe: Recipe) {
         viewModelScope.launch {
-            val cachedRecipe =
-                RecipeRepository.getInstance(application).getRecipeFromCacheById(recipeId)
-            var isFavourite = getFavourites().contains(cachedRecipe.id.toString())
+            val isFavourite = RecipeRepository.getInstance(application).getFavouritesRecipes()
+                .contains(recipe)
             try {
                 _recipeState.postValue(
                     recipeState.value?.copy(
-                        recipe = cachedRecipe,
+                        recipe = recipe,
                         isFavourite = isFavourite,
                         numberOfPortions = 1,
-                        recipeImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}${cachedRecipe.imageUrl}"
+                        recipeImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}${recipe.imageUrl}"
                     )
                 )
             } catch (e: Exception) {
                 Log.i("Recipe VM exception", "${e.message}")
                 _recipeState.postValue(recipeState.value?.copy(isShowError = true))
             }
-            val loadedRecipe = RecipeRepository.getInstance(application).getRecipeById(recipeId)
-            if (loadedRecipe != null) {
-                RecipeRepository.getInstance(application).insertRecipe(loadedRecipe)
-                isFavourite = getFavourites().contains(loadedRecipe.id.toString())
-                _recipeState.postValue(
-                    recipeState.value?.copy(
-                        recipe = loadedRecipe,
-                        isFavourite = isFavourite,
-                        numberOfPortions = 1,
-                        recipeImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}${loadedRecipe.imageUrl}",
-                    )
-                )
-            } else _recipeState.postValue(recipeState.value?.copy(isShowError = true))
-
         }
     }
 
-    private fun getFavourites(): MutableSet<String> {
-        val newSet = sharedPref.getStringSet(KEY_FAVOURITES_RECIPE, setOf()) ?: setOf()
-        return HashSet(newSet)
-    }
-
-    private fun saveFavourites(favourites: MutableSet<String>) {
-        sharedPref.edit()?.putStringSet(KEY_FAVOURITES_RECIPE, favourites)?.apply()
-    }
-
-    internal fun onFavoritesClicked(recipeId: String) {
+    internal fun onFavoritesClicked(recipe: Recipe) {
         _recipeState.value.let { state ->
-            val favouritesSet = getFavourites()
-            if (favouritesSet.contains(recipeId)) favouritesSet.remove(recipeId)
-            else favouritesSet.add(recipeId)
-            saveFavourites(favouritesSet)
-            _recipeState.value = state?.copy(isFavourite = favouritesSet.contains(recipeId))
+            viewModelScope.launch {
+                val favouritesSet = RecipeRepository.getInstance(application).getFavouritesRecipes()
+                if (favouritesSet.contains(recipe)) {
+                    val updatedRecipe = recipe.copy(isFavourite = false)
+                    updateCacheFavourites(updatedRecipe)
+                    _recipeState.postValue(recipeState.value?.copy(isFavourite = false))
+                } else {
+                    val updatedRecipe = recipe.copy(isFavourite = true)
+                    updateCacheFavourites(updatedRecipe)
+                    _recipeState.postValue(recipeState.value?.copy(isFavourite = true))
+                }
+                _recipeState.value = state?.copy(isFavourite = favouritesSet.contains(recipe))
+            }
         }
     }
 
     fun updatePortionsCount(currentCount: Int) {
         _recipeState.value = _recipeState.value?.copy(numberOfPortions = currentCount)
+    }
+
+    private fun updateCacheFavourites(recipe: Recipe) {
+        viewModelScope.launch {
+            RecipeRepository.getInstance(application).updateFavouritesStatus(recipe)
+        }
     }
 }
