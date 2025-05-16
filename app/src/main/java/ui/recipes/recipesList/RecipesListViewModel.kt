@@ -1,16 +1,15 @@
 package ui.recipes.recipesList
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import data.RecipeRepository
 import kotlinx.coroutines.launch
 
 import model.Recipe
 
-class RecipesListViewModel(private val application: Application) : AndroidViewModel(application) {
+class RecipesListViewModel(private val repository: RecipeRepository) : ViewModel() {
 
     data class RecipesListState(
         val listOfRecipes: List<Recipe>? = null,
@@ -30,25 +29,24 @@ class RecipesListViewModel(private val application: Application) : AndroidViewMo
                 imageUrl = categoryImageUrl
             }
             if (categoryId != null) {
-                val cachedRecipes = RecipeRepository.getInstance(application)
-                    .getRecipesFromCacheByCategoryId(categoryId)
+                val cachedRecipes = repository.getRecipesFromCacheByCategoryId(categoryId)
                 if (cachedRecipes.isNotEmpty()) {
                     _recipeState.postValue(
                         recipeState.value?.copy(
                             listOfRecipes = cachedRecipes,
-                            categoryImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}$imageUrl",
+                            categoryImageUrl = "${repository.loadImageUrl}$imageUrl",
                             categoryName = categoryName,
                         )
                     )
                 }
                 val recipes =
-                    RecipeRepository.getInstance(application).getRecipesByCategoryId(categoryId)
+                    repository.getRecipesByCategoryId(categoryId)
                 if (!recipes.isNullOrEmpty()) {
-                    RecipeRepository.getInstance(application).insertRecipesList(recipes)
+                    repository.insertRecipesList(recipes)
                     _recipeState.postValue(
                         recipeState.value?.copy(
                             listOfRecipes = recipes,
-                            categoryImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}$imageUrl",
+                            categoryImageUrl = "${repository.loadImageUrl}$imageUrl",
                             categoryName = categoryName,
                         )
                     )

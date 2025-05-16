@@ -1,19 +1,15 @@
 package ui.recipes.favourites
 
-import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import data.RecipeRepository
 import kotlinx.coroutines.launch
 import model.Recipe
-import ui.recipes.recipe.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
-import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
 
-class FavouritesViewModel(private val application: Application) : AndroidViewModel(application) {
+
+class FavouritesViewModel(private val repository: RecipeRepository) : ViewModel() {
     data class FavouritesState(
         var favouritesList: List<Recipe>? = null,
         var isShowError: Boolean = false
@@ -25,7 +21,7 @@ class FavouritesViewModel(private val application: Application) : AndroidViewMod
 
     fun loadFavouritesState() {
         viewModelScope.launch {
-            val favourites = RecipeRepository.getInstance(application).getFavouritesRecipes()
+            val favourites = repository.getFavouritesRecipes()
             Log.i("!!!", "favourites - $favourites")
             if (favourites.isNotEmpty()) {
                 _favouritesState.postValue(favouritesState.value?.copy(favouritesList = favourites))

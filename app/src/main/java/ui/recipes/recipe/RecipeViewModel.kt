@@ -1,20 +1,16 @@
 package ui.recipes.recipe
 
-import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import data.RecipeRepository
 import kotlinx.coroutines.launch
 import model.Recipe
-import ui.recipes.recipe.RecipeFragment.Companion.KEY_FAVOURITES_RECIPE
-import ui.recipes.recipe.RecipeFragment.Companion.SHARED_PREFERENCES
 
-class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
+
+class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
 
     data class RecipeState(
         val recipe: Recipe? = null,
@@ -30,7 +26,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     fun loadRecipe(recipe: Recipe) {
         viewModelScope.launch {
-            val isFavourite = RecipeRepository.getInstance(application).getFavouritesRecipes()
+            val isFavourite = repository.getFavouritesRecipes()
                 .contains(recipe)
             try {
                 _recipeState.postValue(
@@ -38,7 +34,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
                         recipe = recipe,
                         isFavourite = isFavourite,
                         numberOfPortions = 1,
-                        recipeImageUrl = "${RecipeRepository.getInstance(application).loadImageUrl}${recipe.imageUrl}"
+                        recipeImageUrl = "${repository.loadImageUrl}${recipe.imageUrl}"
                     )
                 )
             } catch (e: Exception) {
@@ -51,7 +47,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     internal fun onFavoritesClicked(recipe: Recipe) {
         _recipeState.value.let { state ->
             viewModelScope.launch {
-                val favouritesSet = RecipeRepository.getInstance(application).getFavouritesRecipes()
+                val favouritesSet = repository.getFavouritesRecipes()
                 if (favouritesSet.contains(recipe)) {
                     val updatedRecipe = recipe.copy(isFavourite = false)
                     updateCacheFavourites(updatedRecipe)
@@ -72,7 +68,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     private fun updateCacheFavourites(recipe: Recipe) {
         viewModelScope.launch {
-            RecipeRepository.getInstance(application).updateFavouritesStatus(recipe)
+            repository.updateFavouritesStatus(recipe)
         }
     }
 }

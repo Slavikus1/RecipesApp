@@ -8,17 +8,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.FragmentCategoriesListBinding
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import di.RecipeApplication
 
 class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
 
-    private val categoryListViewModel: CategoriesListViewModel by viewModels()
+    private lateinit var categoryListViewModel: CategoriesListViewModel
 
     private var _binding: FragmentCategoriesListBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentCategoriesListBinding must not be null ")
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val appContainer = (requireActivity().application as RecipeApplication).appContainer
+        categoryListViewModel = appContainer.categoriesListViewModelFactory.create()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +46,8 @@ class CategoriesListFragment : Fragment(R.layout.fragment_categories_list) {
     }
 
     private fun initRecycler() {
-        val categoriesAdapter = CategoryListAdapter(emptyList())
+        val categoriesAdapter =
+            CategoryListAdapter(emptyList(), requireActivity().application as RecipeApplication)
         binding.rvCategory.adapter = categoriesAdapter
         categoryListViewModel.categoriesState.observe(viewLifecycleOwner) {
             it.list?.let { it1 ->
