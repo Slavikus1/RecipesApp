@@ -1,25 +1,25 @@
 package ui.categories
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import data.RecipeRepository
+import di.RecipeApplication
 import model.Category
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.ItemCategoryBinding
 
-class CategoryListAdapter(private var dataset: List<Category>) :
+class CategoryListAdapter(private var dataset: List<Category>, application: RecipeApplication) :
     RecyclerView.Adapter<CategoryListAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(categoryId: Int)
     }
 
+    private val downloadImageUrl = application.appContainer.repository.loadImageUrl
     private var itemClickListener: OnItemClickListener? = null
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -48,7 +48,7 @@ class CategoryListAdapter(private var dataset: List<Category>) :
         viewHolder.titleTextView.text = category.title
         viewHolder.descriptionTextView.text = category.description
         Glide.with(viewHolder.imageView.context)
-            .load("${RecipeRepository.getInstance(Application()).loadImageUrl}${category.imageUrl}")
+            .load("$downloadImageUrl${category.imageUrl}")
             .placeholder(R.drawable.img_placeholder)
             .error(R.drawable.img_error)
             .into(viewHolder.imageView)
