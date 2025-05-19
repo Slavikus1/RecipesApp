@@ -1,20 +1,20 @@
 package ui.recipes.recipesList
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import data.RecipeRepository
+import di.RecipeApplication
 import ru.aliohin.recipesapp.R
 import model.Recipe
 import ru.aliohin.recipesapp.databinding.ItemRecipeBinding
 
-class RecipesListAdapter(private var dataset: List<Recipe>) :
+class RecipesListAdapter(private var dataset: List<Recipe>, application: RecipeApplication) :
     RecyclerView.Adapter<RecipesListAdapter.RecipeHolder>() {
 
     private var itemClickListener: OnItemClickListener? = null
+    private val downloadImageUrl = application.appContainer.repository.loadImageUrl
 
     interface OnItemClickListener {
         fun onItemClick(recipeId: Int)
@@ -48,7 +48,7 @@ class RecipesListAdapter(private var dataset: List<Recipe>) :
         holder.imageView.contentDescription =
             holder.itemView.context.getString(R.string.iV_Recipes_list_description, recipe.title)
         Glide.with(holder.imageView.context)
-            .load("${RecipeRepository.getInstance(Application()).loadImageUrl}${recipe.imageUrl}")
+            .load("$downloadImageUrl${recipe.imageUrl}")
             .placeholder(R.drawable.img_placeholder)
             .error(R.drawable.img_error)
             .into(holder.imageView)
