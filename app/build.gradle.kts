@@ -2,9 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "2.0.21"
+    kotlin("plugin.serialization")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.google.devtools.ksp") version "2.0.0-1.0.24"
+    id("com.google.devtools.ksp")
+    id ("com.google.dagger.hilt.android")
 }
 
 android {
@@ -44,6 +45,9 @@ android {
 }
 
 dependencies {
+    val hiltVersion = "2.56.2"
+    implementation ("com.google.dagger:hilt-android:$hiltVersion")
+    ksp ("com.google.dagger:hilt-compiler:$hiltVersion")
 
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)

@@ -5,12 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import data.BASE_IMAGE_URL
 import data.RecipeRepository
 import kotlinx.coroutines.launch
 import model.Recipe
+import javax.inject.Inject
 
-
-class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
+@HiltViewModel
+class RecipeViewModel @Inject constructor (private val repository: RecipeRepository) : ViewModel() {
 
     data class RecipeState(
         val recipe: Recipe? = null,
@@ -34,7 +37,7 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
                         recipe = recipe,
                         isFavourite = isFavourite,
                         numberOfPortions = 1,
-                        recipeImageUrl = "${repository.loadImageUrl}${recipe.imageUrl}"
+                        recipeImageUrl = "${BASE_IMAGE_URL}${recipe.imageUrl}"
                     )
                 )
             } catch (e: Exception) {

@@ -1,28 +1,24 @@
 package data
 
 import android.util.Log
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
 import model.Category
 import model.Recipe
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 const val CONTENT_TYPE = "application/Json"
 const val BASE_URL = "https://recipes.androidsprint.ru/api/"
 const val BASE_IMAGE_URL = "https://recipes.androidsprint.ru/api/images/"
 
-class RecipeRepository(
+class RecipeRepository @Inject constructor(
     private val categoriesDao: CategoriesDao,
     private val recipeDao: RecipeDao,
-    private val dispatcher: CoroutineContext,
     private val service: RecipeApiService,
 ) {
-    val loadImageUrl = BASE_IMAGE_URL
+
+    private val dispatcher: CoroutineContext = Dispatchers.IO
 
     suspend fun getFavouritesRecipes(): List<Recipe> {
         return recipeDao.getFavouritesRecipes()

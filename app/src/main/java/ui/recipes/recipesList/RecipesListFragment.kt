@@ -6,20 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import di.AppContainer
+import dagger.hilt.android.AndroidEntryPoint
+import data.RecipeRepository
+import di.RecipeModule
 import di.RecipeApplication
 import kotlinx.coroutines.launch
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.FragmentRecipesListBinding
 
-class RecipesListFragment : Fragment() {
-
-    private lateinit var recipeListViewModel: RecipesListViewModel
-    private lateinit var appContainer: AppContainer
+@AndroidEntryPoint
+class RecipesListFragment (private val repository: RecipeRepository): Fragment() {
+    private val recipeListViewModel: RecipesListViewModel by viewModels()
     private val recipeListArgs: RecipesListFragmentArgs by navArgs()
 
     private var categoryId: Int? = null
@@ -30,11 +32,6 @@ class RecipesListFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentRecipesListBinding must not be null ")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        appContainer = (requireActivity().application as RecipeApplication).appContainer
-        recipeListViewModel = appContainer.recipesListViewModelFactory.create()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,15 +79,15 @@ class RecipesListFragment : Fragment() {
 
     private fun openRecipeByRecipeId(recipeId: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            val cachedRecipe = appContainer.repository.getRecipeFromCacheById(recipeId)
+            val cachedRecipe = repository.getRecipeFromCacheById(recipeId)
             if (cachedRecipe == null) {
-                val loadedRecipe = appContainer.repository.getRecipeById(recipeId)
+                val loadedRecipe = repository.getRecipeById(recipeId)
                 findNavController().navigate(
                     RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
                         loadedRecipe!!
                     )
                 )
-                appContainer.repository.insertRecipe(loadedRecipe)
+                repository.insertRecipe(loadedRecipe)
             } else {
                 findNavController().navigate(
                     RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
@@ -100,6 +97,5 @@ class RecipesListFragment : Fragment() {
             }
 
         }
-
     }
 }

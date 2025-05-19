@@ -5,17 +5,12 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.navigation.findNavController
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import data.RecipeApiService
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.json.Json
-import model.Category
 import model.Recipe
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Retrofit
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.ActivityMainBinding
 import java.util.concurrent.Executors
@@ -26,6 +21,7 @@ private val httpInterceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.BODY
 }
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding

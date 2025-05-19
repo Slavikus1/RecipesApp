@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import data.BASE_IMAGE_URL
 import di.RecipeApplication
 import model.Category
 import ru.aliohin.recipesapp.R
@@ -19,7 +20,6 @@ class CategoryListAdapter(private var dataset: List<Category>, application: Reci
         fun onItemClick(categoryId: Int)
     }
 
-    private val downloadImageUrl = application.appContainer.repository.loadImageUrl
     private var itemClickListener: OnItemClickListener? = null
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -48,7 +48,7 @@ class CategoryListAdapter(private var dataset: List<Category>, application: Reci
         viewHolder.titleTextView.text = category.title
         viewHolder.descriptionTextView.text = category.description
         Glide.with(viewHolder.imageView.context)
-            .load("$downloadImageUrl${category.imageUrl}")
+            .load("$BASE_IMAGE_URL${category.imageUrl}")
             .placeholder(R.drawable.img_placeholder)
             .error(R.drawable.img_error)
             .into(viewHolder.imageView)
