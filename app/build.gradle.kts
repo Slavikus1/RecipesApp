@@ -45,14 +45,13 @@ android {
 }
 
 dependencies {
-    implementation (libs.kotlin.reflect)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.retrofit.v2110)
     implementation(libs.github.glide)
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.okhttp)
