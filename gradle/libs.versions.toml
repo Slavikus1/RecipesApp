@@ -12,6 +12,7 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
+serialization = "2.0.21"
 kotlinxSerializationJson = "1.7.3"
 material = "1.12.0"
 activity = "1.10.1"
@@ -21,7 +22,6 @@ okhttp = "4.12.0"
 retrofit = "(insert latest version)"
 roomCompiler = "2.7.1"
 roomCompilerVersion = "2.7.1"
-
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
