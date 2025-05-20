@@ -2,10 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
-    kotlin("plugin.serialization")
-    id("androidx.navigation.safeargs.kotlin")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.navigationSafeArgsKotlin) apply false
+    alias(libs.plugins.kotlinSerialization) apply false
+    alias(libs.plugins.devtoolsKsp)
+    alias(libs.plugins.daggerHilt)
 }
 
 android {
@@ -46,21 +46,21 @@ android {
 
 dependencies {
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    ksp(libs.hilt.android.compiler)
+
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
-    implementation(libs.retrofit.v2110)
+    implementation(libs.retrofit)
     implementation(libs.github.glide)
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.navigation.fragment)
-    implementation(libs.androidx.navigation.ui)
-    implementation(libs.androidx.navigation.dynamic.features.fragment)
-    androidTestImplementation(libs.androidx.navigation.testing)
+
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
+
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
