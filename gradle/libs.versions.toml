@@ -1,22 +1,26 @@
 [versions]
-agp = "8.9.2"
-fragmentVersion = "1.8.5"
+kotlinReflect = "2.0.20"
+safeArgs = "2.8.8"
+ksp = "2.1.21-2.0.1"
+agp = "8.9.3"
+fragmentVersion = "1.8.6"
 githubGlide = "4.16.0"
-kotlin = "2.0.0"
-coreKtx = "1.13.1"
+hiltVersion = "2.56.2"
+kotlin = "2.1.21"
+coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 kotlinxSerializationJson = "1.7.3"
 material = "1.12.0"
-activity = "1.9.2"
-constraintlayout = "2.1.4"
-navigationCompose = "2.8.8"
+activity = "1.10.1"
+constraintlayout = "2.2.1"
+navigationCompose = "2.9.0"
 okhttp = "4.12.0"
 retrofit = "(insert latest version)"
 roomCompiler = "2.7.1"
-roomCompilerVersion = "1.0.0"
+roomCompilerVersion = "2.7.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,10 +35,13 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-compiler-v100 = { module = "androidx.room:room-compiler", version.ref = "roomCompilerVersion" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
 github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "githubGlide" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlinReflect" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }

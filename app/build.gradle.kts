@@ -5,17 +5,17 @@ plugins {
     kotlin("plugin.serialization")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp")
-    id ("com.google.dagger.hilt.android")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace = "ru.aliohin.recipesapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "ru.aliohin.recipesapp"
         minSdk = 28
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -45,22 +45,18 @@ android {
 }
 
 dependencies {
-    val hiltVersion = "2.56.2"
-    implementation ("com.google.dagger:hilt-android:$hiltVersion")
-    ksp ("com.google.dagger:hilt-compiler:$hiltVersion")
-
+    implementation (libs.kotlin.reflect)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
-
-    implementation (libs.github.glide)
-
+    implementation(libs.github.glide)
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
-
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)

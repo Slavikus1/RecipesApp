@@ -2,8 +2,8 @@
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
-    id("androidx.navigation.safeargs.kotlin") version "2.8.8" apply false
+    id("androidx.navigation.safeargs.kotlin") version libs.versions.safeArgs apply false
     kotlin("plugin.serialization") version "2.0.21"
-    id("com.google.devtools.ksp") version "2.0.0-1.0.24" apply false
-    id ("com.google.dagger.hilt.android") version "2.56.2" apply false
+    id("com.google.devtools.ksp") version libs.versions.ksp apply false
+    id ("com.google.dagger.hilt.android") version libs.versions.hiltVersion apply false
 }
