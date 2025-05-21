@@ -4,12 +4,16 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import data.BASE_IMAGE_URL
 import data.RecipeRepository
 import kotlinx.coroutines.launch
 
 import model.Recipe
+import javax.inject.Inject
 
-class RecipesListViewModel(private val repository: RecipeRepository) : ViewModel() {
+@HiltViewModel
+class RecipesListViewModel @Inject constructor (private val repository: RecipeRepository) : ViewModel() {
 
     data class RecipesListState(
         val listOfRecipes: List<Recipe>? = null,
@@ -21,6 +25,8 @@ class RecipesListViewModel(private val repository: RecipeRepository) : ViewModel
     private val _recipeState = MutableLiveData(RecipesListState())
     val recipeState
         get() = _recipeState
+
+    val myRepository = repository
 
     fun loadRecipesListState(categoryId: Int?, categoryName: String?, categoryImageUrl: String?) {
         viewModelScope.launch {
@@ -34,7 +40,7 @@ class RecipesListViewModel(private val repository: RecipeRepository) : ViewModel
                     _recipeState.postValue(
                         recipeState.value?.copy(
                             listOfRecipes = cachedRecipes,
-                            categoryImageUrl = "${repository.loadImageUrl}$imageUrl",
+                            categoryImageUrl = "${BASE_IMAGE_URL}$imageUrl",
                             categoryName = categoryName,
                         )
                     )
@@ -46,7 +52,7 @@ class RecipesListViewModel(private val repository: RecipeRepository) : ViewModel
                     _recipeState.postValue(
                         recipeState.value?.copy(
                             listOfRecipes = recipes,
-                            categoryImageUrl = "${repository.loadImageUrl}$imageUrl",
+                            categoryImageUrl = "${BASE_IMAGE_URL}$imageUrl",
                             categoryName = categoryName,
                         )
                     )

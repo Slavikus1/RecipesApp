@@ -7,24 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import di.RecipeApplication
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.FragmentFavoritesBinding
 import ui.recipes.recipesList.RecipesListAdapter
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
-    private lateinit var favouritesViewModel: FavouritesViewModel
+    private val favouritesViewModel: FavouritesViewModel by viewModels()
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipeApplication).appContainer
-        favouritesViewModel = appContainer.favouritesListViewModelFactory.create()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

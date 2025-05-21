@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import data.BASE_IMAGE_URL
 import di.RecipeApplication
 import ru.aliohin.recipesapp.R
 import model.Recipe
@@ -14,7 +15,6 @@ class RecipesListAdapter(private var dataset: List<Recipe>, application: RecipeA
     RecyclerView.Adapter<RecipesListAdapter.RecipeHolder>() {
 
     private var itemClickListener: OnItemClickListener? = null
-    private val downloadImageUrl = application.appContainer.repository.loadImageUrl
 
     interface OnItemClickListener {
         fun onItemClick(recipeId: Int)
@@ -48,7 +48,7 @@ class RecipesListAdapter(private var dataset: List<Recipe>, application: RecipeA
         holder.imageView.contentDescription =
             holder.itemView.context.getString(R.string.iV_Recipes_list_description, recipe.title)
         Glide.with(holder.imageView.context)
-            .load("$downloadImageUrl${recipe.imageUrl}")
+            .load("$BASE_IMAGE_URL${recipe.imageUrl}")
             .placeholder(R.drawable.img_placeholder)
             .error(R.drawable.img_error)
             .into(holder.imageView)
