@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
-    alias(libs.plugins.navigationSafeArgsKotlin) apply false
-    alias(libs.plugins.kotlinSerialization) apply false
+    alias(libs.plugins.navigationSafeArgsKotlin)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.devtoolsKsp)
     alias(libs.plugins.daggerHilt)
 }
@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
+    androidTestImplementation(libs.androidx.navigation.testing)
 
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
