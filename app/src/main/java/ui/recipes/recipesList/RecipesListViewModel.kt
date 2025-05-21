@@ -26,6 +26,8 @@ class RecipesListViewModel @Inject constructor (private val repository: RecipeRe
     val recipeState
         get() = _recipeState
 
+    val myRepository = repository
+
     fun loadRecipesListState(categoryId: Int?, categoryName: String?, categoryImageUrl: String?) {
         viewModelScope.launch {
             var imageUrl: String? = null

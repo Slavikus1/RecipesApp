@@ -13,17 +13,17 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import data.RecipeRepository
-import di.RecipeModule
 import di.RecipeApplication
 import kotlinx.coroutines.launch
 import ru.aliohin.recipesapp.R
 import ru.aliohin.recipesapp.databinding.FragmentRecipesListBinding
 
 @AndroidEntryPoint
-class RecipesListFragment (private val repository: RecipeRepository): Fragment() {
+class RecipesListFragment: Fragment() {
     private val recipeListViewModel: RecipesListViewModel by viewModels()
     private val recipeListArgs: RecipesListFragmentArgs by navArgs()
 
+    private lateinit var repository: RecipeRepository
     private var categoryId: Int? = null
     private var categoryName: String? = null
     private var categoryImageUrl: String? = null
@@ -43,6 +43,7 @@ class RecipesListFragment (private val repository: RecipeRepository): Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        repository = recipeListViewModel.myRepository
         categoryId = recipeListArgs.Category.id
         categoryName = recipeListArgs.Category.title
         categoryImageUrl = recipeListArgs.Category.imageUrl
